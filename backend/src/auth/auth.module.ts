@@ -8,12 +8,8 @@ import { IntraStrategy } from './intra.guard';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [HttpModule, UserModule, ConfigModule],
-  controllers: [AuthController],
-  providers: [
-    UserSerializer,
-    AuthService,
-    IntraStrategy,
-  ],
+	imports: [HttpModule, UserModule, ConfigModule],
+	controllers: [AuthController],
+	providers: [UserSerializer, AuthService, IntraStrategy],
 })
 export class AuthModule {}

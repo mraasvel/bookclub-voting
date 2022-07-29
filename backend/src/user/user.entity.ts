@@ -1,10 +1,6 @@
-import {
-	Column,
-	Entity,
-	PrimaryGeneratedColumn,
-  } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-  
+
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn()
@@ -13,7 +9,7 @@ export class User {
 	@Exclude()
 	@Column()
 	intraId: string;
-  
+
 	@Column({ unique: true, nullable: true })
 	username: string;
 }
