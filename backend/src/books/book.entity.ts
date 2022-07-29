@@ -1,15 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Exclude } from 'class-transformer';
 
 @Entity()
-export class User {
+export class Book {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Exclude()
-	@Column()
-	intraId: string;
-
 	@Column({ unique: true })
-	username: string;
+	name: string;
+
+	@Column()
+	author: string;
 }

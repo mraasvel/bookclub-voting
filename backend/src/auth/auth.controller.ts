@@ -19,7 +19,7 @@ import { OAuthExceptionFilter } from './auth.filter';
 export class AuthController {
 	constructor(private configService: ConfigService) {}
 
-	@Get('login/intra')
+	@Get('login')
 	@UseFilters(OAuthExceptionFilter)
 	@UseGuards(IntraGuard)
 	async loginIntra(@Res() res: Response) {
