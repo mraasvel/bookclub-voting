@@ -1,0 +1,45 @@
+version: "3"
+services:
+  backend:
+    container_name: bookclub-voting-backend
+    build:
+      context: ./backend
+      target: production
+    volumes:
+      # - ./backend:/app/
+      - backend_node_module:/app/node_modules
+    ports:
+      - "3000:3000"
+    # env_file:
+    #   - ./backend/.env
+
+    environment:
+      POSTGRES_HOST: bookclub-voting-postgres
+      REDIS_URI: "redis://redis"
+
+  # frontend:
+  #   container_name: bookclub-voting-frontend
+  #   build:
+  #     context: ./frontend
+  #   volumes:
+  #     - ./frontend:/app/
+  #     - frontend_node_module:/app/node_modules
+  #   ports:
+  #     - "8080:8080"
+  #   links:
+  #     - backend
+
+  postgres:
+    container_name: bookclub-voting-postgres
+    image: postgres:13
+    # env_file:
+    #   - ./backend/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  backend_node_module:
+  frontend_node_module:
+  pgdata:
