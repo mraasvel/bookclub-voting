@@ -1,30 +1,27 @@
-import {
-	Injectable,
-	NotFoundException,
-  } from '@nestjs/common';
-  import { InjectRepository } from '@nestjs/typeorm';
-  import { Repository, FindOneOptions } from 'typeorm';
-  import { User } from './user.entity';
-  import { IntraUser } from './user.types';
-  
-  @Injectable()
-  export class UserService {
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './user.entity';
+import { IntraUser } from './user.types';
+
+@Injectable()
+export class UserService {
 	constructor(
-	  @InjectRepository(User) private userRepository: Repository<User>,
+		@InjectRepository(User) private userRepository: Repository<User>,
 	) {}
-  
+
 	createUser(user: User): Promise<User> {
-	  const newUser = this.userRepository.create(user);
-	  return this.userRepository.save(newUser);
+		const newUser = this.userRepository.create(user);
+		return this.userRepository.save(newUser);
 	}
-  
+
 	private createFromDto(userDTO: IntraUser): User {
-	  return this.userRepository.create(userDTO);
+		return this.userRepository.create(userDTO);
 	}
-  
+
 	async addUser(userDTO: IntraUser) {
-	  const user = this.createFromDto(userDTO);
-	  return await this.userRepository.save(user);
+		const user = this.createFromDto(userDTO);
+		return await this.userRepository.save(user);
 	}
 
 	async findById(id: number): Promise<User> {
@@ -38,5 +35,4 @@ import {
 	async findByIntraId(user: IntraUser) {
 		return await this.userRepository.findOneBy({ intraId: user.intraId });
 	}
-  }
-  
+}

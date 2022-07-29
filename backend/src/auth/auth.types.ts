@@ -2,12 +2,10 @@ import { Request } from 'express';
 import { User } from 'src/user/user.entity';
 
 export interface RequestWithUser extends Request {
-  user: User;
+	user: User;
 }
 
 export interface SessionUser {
-  id: number;
+	id: number;
 }
-export type AuthenticatedState =
-  | 'AUTHENTICATED'
-  | 'OAUTH'
+export type AuthenticatedState = 'AUTHENTICATED' | 'OAUTH';
