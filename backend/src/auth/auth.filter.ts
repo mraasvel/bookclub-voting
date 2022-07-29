@@ -6,7 +6,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common';
 import { Response } from 'express';
-  
+
 @Catch(UnauthorizedException)
 export class OAuthExceptionFilter implements ExceptionFilter {
 	catch(_exception: HttpException, host: ArgumentsHost) {

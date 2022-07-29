@@ -1,4 +1,4 @@
 export interface IntraUser {
-	intraId: string,
-	username: string,
+	intraId: string;
+	username: string;
 }

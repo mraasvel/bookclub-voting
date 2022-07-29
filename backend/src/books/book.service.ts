@@ -7,18 +7,18 @@ import { BOOKS } from './books';
 @Injectable()
 export class BookService {
 	constructor(
-	  @InjectRepository(Book) private bookRepository: Repository<Book>,
+		@InjectRepository(Book) private bookRepository: Repository<Book>,
 	) {}
 
 	async seedDatabase() {
 		// init book table
 		for (const book of BOOKS) {
-			const found = this.bookRepository.findOneBy( { name: book.name } );
+			const found = this.bookRepository.findOneBy({ name: book.name });
 			if (found) {
 				continue;
 			}
 			const entity = this.bookRepository.create(book);
-			await this.bookRepository.save(book);
+			await this.bookRepository.save(entity);
 		}
 	}
 
