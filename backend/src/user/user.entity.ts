@@ -14,6 +14,6 @@ export class User {
 	@Column()
 	intraId: string;
   
-	@Column({ unique: true, nullable: true })
+	@Column({ unique: true })
 	username: string;
 }
