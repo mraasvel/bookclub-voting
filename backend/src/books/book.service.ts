@@ -13,11 +13,15 @@ export class BookService {
 	async seedDatabase() {
 		// init book table
 		for (const book of BOOKS) {
-			const found = this.bookRepository.findOneBy({ name: book.name });
+			const found = await this.bookRepository.findOneBy({
+				name: book.name,
+			});
+			console.log('found book:', found);
 			if (found) {
 				continue;
 			}
 			const entity = this.bookRepository.create(book);
+			console.log('saving:', entity);
 			await this.bookRepository.save(entity);
 		}
 	}
