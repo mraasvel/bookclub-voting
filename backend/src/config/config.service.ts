@@ -5,7 +5,7 @@ export default () => ({
 		intra: {
 			CLIENT_ID: process.env.INTRA_CLIENT_ID,
 			CLIENT_SECRET: process.env.INTRA_CLIENT_SECRET,
-			CALLBACK_URL: `http://${process.env.DOMAIN_NAME}/api/auth/login/intra`, // OAuth provider redirects to this to finalize authentication
+			CALLBACK_URL: `http://${process.env.DOMAIN_NAME}/auth/login`, // OAuth provider redirects to this to finalize authentication
 		},
 		REDIRECT_URL: `http://${process.env.DOMAIN_NAME}`, // We redirect to this after OAuth flow
 	},

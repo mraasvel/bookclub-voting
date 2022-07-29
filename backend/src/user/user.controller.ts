@@ -16,15 +16,4 @@ export class UserController {
 		const user = await this.userService.findById(req.user.id);
 		return user;
 	}
-
-	// TODO: implement voted on update
-
-	// @Patch('update')
-	// async updateUser(@Req() request: RequestWithUser, @Body() user: PartialUser) {
-	//   await this.userService.update(request.user.id, user);
-	//   this.socketService.statusServer.emit('friendUpdate');
-	//   this.achievementService.addAchievement(
-	// 	request.user.id,
-	//   );
-	// }
 }
