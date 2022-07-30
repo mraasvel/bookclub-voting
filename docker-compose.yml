@@ -6,11 +6,11 @@ services:
     container_name: bookclub-voting-backend
     build:
       context: ./backend
-      target: production
-      # target: development
+      # target: production
+      target: development
     volumes:
-      - backend_node_module:/app/node_modules
-      # - ./backend:/app/
+      # - backend_node_module:/app/node_modules
+      - ./backend:/app/
     env_file:
       - .env
     depends_on:
@@ -20,11 +20,11 @@ services:
     container_name: bookclub-voting-frontend
     build:
       context: ./frontend
-      target: production
-      # target: development
+      # target: production
+      target: development
     volumes:
-      - frontend_node_module:/app/node_modules
-      # - ./frontend:/app/
+      # - frontend_node_module:/app/node_modules
+      - ./frontend:/app/
     env_file:
       - .env
     ports:

@@ -9,6 +9,7 @@ import * as passport from 'passport';
 import * as session from 'express-session';
 import { ConfigService } from '@nestjs/config';
 import { BookService } from './books/book.service';
+import getLogLevels from './util/getLogLevels';
 
 // todo: fix deprecated usage, look at session docs, consider jwt maybe etc
 async function setupSession(app: INestApplication) {
@@ -35,7 +36,9 @@ async function seed(app: INestApplication) {
 }
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create(AppModule, {
+		logger: getLogLevels(process.env.NODE_ENV === 'production')
+	});
 	await setupSession(app);
 	app.enableCors({
 		origin: ['http://localhost:8080'],

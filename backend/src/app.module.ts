@@ -1,16 +1,31 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { config } from './ormconfig';
 import { UserModule } from './user/user.module';
 import { PassportModule } from '@nestjs/passport';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configModuleOptions } from './config/config.options';
 import { BookModule } from './books/book.module';
+import { User } from './user/user.entity';
+import { Book } from './books/book.entity';
 
 @Module({
 	imports: [
-		TypeOrmModule.forRoot(config),
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) => ({
+				type: 'postgres',
+				host: 'postgres',
+				port: 5432,
+				username: configService.get('POSTGRES_USER'),
+				password: configService.get('POSTGRES_PASSWORD'),
+				database: configService.get('POSTGRES_DB'),
+				entities: [User, Book],
+				// todo: setup migrations typeorm
+				synchronize: true,
+			})
+		}),
 		UserModule,
 		BookModule,
 		AuthModule,
