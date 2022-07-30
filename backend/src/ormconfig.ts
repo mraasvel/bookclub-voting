@@ -12,5 +12,6 @@ export const config: PostgresConnectionOptions = {
 	username: 'root',
 	password: 'root',
 	entities: [User, TypeORMSession, Book],
+	// todo: setup migrations typeorm
 	synchronize: true,
 };

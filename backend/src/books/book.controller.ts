@@ -10,7 +10,6 @@ export class BookController {
 	@Get()
 	async find() {
 		const books = await this.bookService.find();
-		console.log('books: ', books);
 		return books;
 	}
 }

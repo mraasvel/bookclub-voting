@@ -16,12 +16,10 @@ export class BookService {
 			const found = await this.bookRepository.findOneBy({
 				name: book.name,
 			});
-			console.log('found book:', found);
 			if (found) {
 				continue;
 			}
 			const entity = this.bookRepository.create(book);
-			console.log('saving:', entity);
 			await this.bookRepository.save(entity);
 		}
 	}
