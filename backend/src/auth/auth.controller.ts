@@ -29,7 +29,18 @@ export class AuthController {
 	@Post('status')
 	status(@Req() req: any) {
 		let state: AuthenticatedState;
-		if (!req.isAuthenticated || !req.isAuthenticated()) {
+		if (!req.isAuthenticated()) {
+			state = 'OAUTH';
+		} else {
+			state = 'AUTHENTICATED';
+		}
+		return { state };
+	}
+
+	@Get('status')
+	getStatus(@Req() req: any) {
+		let state: AuthenticatedState;
+		if (!req.isAuthenticated()) {
 			state = 'OAUTH';
 		} else {
 			state = 'AUTHENTICATED';
@@ -40,18 +51,14 @@ export class AuthController {
 	@Delete('logout')
 	@UseGuards(AuthenticatedGuard)
 	async logout(@Req() req: any) {
-		if (!req.session || !req.logout) {
+		if (!req.session) {
 			return;
 		}
-		req.logout();
-		req.session.cookie.maxAge = 0;
-		await new Promise<void>((resolve, reject) => {
-			req.session.destroy((err: any) => {
-				if (err) {
-					reject(err);
-				}
-				resolve();
-			});
+		req.logout((err: any) => {
+			if (err) {
+				console.log('logout error:', err);
+			}
 		});
+		req.session.cookie.maxAge = 0;
 	}
 }

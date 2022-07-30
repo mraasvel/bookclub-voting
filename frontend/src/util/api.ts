@@ -1,7 +1,9 @@
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+const VITE_WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 // uri == "/user"
 export async function callApi(uri: string, init?: RequestInit) {
-	return await fetch(`${VITE_API_URL}/${uri}`, init);
+	const URI = `${VITE_WEBSITE_URL}/api${uri}`;
+	console.log("api call: ", URI);
+	return await fetch(URI, init);
 }
 
 // Change this if you need more methods with a JSON body

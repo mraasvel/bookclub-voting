@@ -37,6 +37,11 @@ async function seed(app: INestApplication) {
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	await setupSession(app);
+	app.enableCors({
+		origin: ['http://localhost:8080'],
+		credentials: true,
+		exposedHeaders: ['set-cookie'],
+	});
 	app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalInterceptors(
 		new ClassSerializerInterceptor(app.get(Reflector)),

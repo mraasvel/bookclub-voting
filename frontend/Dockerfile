@@ -6,11 +6,9 @@ ENV NODE_ENV=development
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
-RUN npm run build
-EXPOSE 3000
+RUN npm run build-only
 
-CMD npm install && npm run start:dev
-
+CMD npm install && npm run dev
 
 FROM node:18 AS production
 ENV NODE_ENV=production
@@ -21,5 +19,4 @@ RUN npm install  --omit=dev
 COPY . .
 COPY --from=development /app/dist ./dist/
 
-EXPOSE 3000
-CMD npm run start:prod
+CMD npm run dev

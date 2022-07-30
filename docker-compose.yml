@@ -1,3 +1,5 @@
+# NOTE: while developing, switch to local volumes and target to production
+
 version: "3"
 services:
   backend:
@@ -5,27 +7,30 @@ services:
     build:
       context: ./backend
       target: production
+      # target: development
     volumes:
-      # - ./backend:/app/
       - backend_node_module:/app/node_modules
-    ports:
-      - "3000:3000"
+      # - ./backend:/app/
     env_file:
       - .env
     depends_on:
       - postgres
 
-  # frontend:
-  #   container_name: bookclub-voting-frontend
-  #   build:
-  #     context: ./frontend
-  #   volumes:
-  #     - ./frontend:/app/
-  #     - frontend_node_module:/app/node_modules
-  #   ports:
-  #     - "8080:8080"
-  #   links:
-  #     - backend
+  frontend:
+    container_name: bookclub-voting-frontend
+    build:
+      context: ./frontend
+      target: production
+      # target: development
+    volumes:
+      - frontend_node_module:/app/node_modules
+      # - ./frontend:/app/
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    links:
+      - backend
 
   postgres:
     container_name: postgres
