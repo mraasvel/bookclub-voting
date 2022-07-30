@@ -26,7 +26,9 @@ export default defineComponent({
 	},
 	async mounted() {
 		const response = await callApi("/book");
-		this.books = await response.json();
+		if (response.ok) {
+			this.books = await response.json();
+		}
 	}
 });
 </script>

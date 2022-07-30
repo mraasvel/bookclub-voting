@@ -1,5 +1,8 @@
-- add logging to backend
+# todo
 - fix backend session
-- take postgres/orm settings from environment configuration
 - orm migration instead of synch
-- fill in form to make custom vote (CSV list or something like that, customizable voting options)
+- make some simply specification for voting process
+- set up voting logic
+
+# future
+- generic voting: fill in some form in some format with options and generic voting customizability

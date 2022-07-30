@@ -14,11 +14,8 @@ export async function logout() {
 }
 
 export async function checkUserSession() {
-	const r2 = await callApi("/auth/status");
-	console.log(await r2.json());
 	const response = await callApi("/auth/status", { method: "POST" });
 	const state = (await response.json()).state;
-	console.log("State:", state);
 	if (state === "AUTHENTICATED") {
 		useUserStore().setAuthenticated(true);
 	}
