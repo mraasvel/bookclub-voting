@@ -26,7 +26,7 @@ import { DatabaseModule } from './database/database.module';
 				entities: [User, Book, TypeORMSession],
 				// todo: setup migrations typeorm
 				synchronize: true,
-			})
+			}),
 		}),
 		UserModule,
 		BookModule,

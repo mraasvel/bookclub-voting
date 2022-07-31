@@ -16,7 +16,7 @@ export class AuthService {
 		this.logger.debug(`found user: ${JSON.stringify(user_db)}`);
 		return user_db;
 	}
-	
+
 	async createUser(user: IntraUser) {
 		this.logger.debug(`creating new user: ${JSON.stringify(user)}`);
 		return await this.userService.addUser(user);

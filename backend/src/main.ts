@@ -42,7 +42,7 @@ async function seed(app: INestApplication) {
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
-		logger: getLogLevels(process.env.NODE_ENV === 'production')
+		logger: getLogLevels(process.env.NODE_ENV === 'production'),
 	});
 	await setupSession(app);
 	app.enableCors({
