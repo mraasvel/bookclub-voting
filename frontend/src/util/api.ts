@@ -2,7 +2,6 @@ const VITE_WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 // uri == "/user"
 export async function callApi(uri: string, init?: RequestInit) {
 	const URI = `${VITE_WEBSITE_URL}/api${uri}`;
-	console.log("api call: ", URI);
 	return await fetch(URI, init);
 }
 

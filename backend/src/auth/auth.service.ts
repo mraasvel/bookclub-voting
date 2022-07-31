@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { IntraUser } from 'src/user/user.types';
 
 @Injectable()
 export class AuthService {
+	private readonly logger = new Logger(AuthService.name);
+
 	constructor(private userService: UserService) {}
 
 	async validateUser(user: IntraUser) {
@@ -11,12 +13,12 @@ export class AuthService {
 		if (!user_db) {
 			return await this.createUser(user);
 		}
-		console.log('Found user:', user_db);
+		this.logger.debug(`found user: ${JSON.stringify(user_db)}`);
 		return user_db;
 	}
 
 	async createUser(user: IntraUser) {
-		console.log('Creating User:', user);
+		this.logger.debug(`creating new user: ${JSON.stringify(user)}`);
 		return await this.userService.addUser(user);
 	}
 

@@ -7,6 +7,7 @@ import {
 	UseGuards,
 	Post,
 	UseFilters,
+	Logger,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { IntraGuard } from './intra.guard';
@@ -17,6 +18,8 @@ import { OAuthExceptionFilter } from './auth.filter';
 
 @Controller('auth')
 export class AuthController {
+	private readonly logger = new Logger(AuthController.name);
+
 	constructor(private configService: ConfigService) {}
 
 	@Get('login')
@@ -56,7 +59,7 @@ export class AuthController {
 		}
 		req.logout((err: any) => {
 			if (err) {
-				console.log('logout error:', err);
+				this.logger.error(err);
 			}
 		});
 		req.session.cookie.maxAge = 0;

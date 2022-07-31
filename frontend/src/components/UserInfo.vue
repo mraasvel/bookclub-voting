@@ -25,7 +25,9 @@ export default defineComponent({
 	},
 	async mounted() {
 		const response = await callApi("/user/me");
-		this.user = await response.json();
+		if (response.ok) {
+			this.user = await response.json();
+		}
 	}
 });
 </script>

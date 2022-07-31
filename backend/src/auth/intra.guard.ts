@@ -1,4 +1,4 @@
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import { Injectable, ExecutionContext, Logger } from '@nestjs/common';
 import { Strategy } from 'passport-42';
 import { AuthGuard, PassportStrategy } from '@nestjs/passport';
 import { AuthService } from './auth.service';
@@ -8,6 +8,7 @@ import { IntraUser } from 'src/user/user.types';
 
 @Injectable()
 export class IntraStrategy extends PassportStrategy(Strategy) {
+	private readonly logger = new Logger(IntraStrategy.name);
 	constructor(
 		private readonly authService: AuthService,
 		private readonly configService: ConfigService,
@@ -37,7 +38,7 @@ export class IntraStrategy extends PassportStrategy(Strategy) {
 	) {
 		const { id: intraId, username } = profile;
 		const details: IntraUser = { username, intraId };
-		console.log('Intra User:', details);
+		this.logger.debug(`intra user validation: ${JSON.stringify(details)}`);
 		const user = await this.authService.validateUser(details);
 		callback(null, { id: user.id });
 	}
