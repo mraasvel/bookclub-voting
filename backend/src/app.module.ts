@@ -8,6 +8,8 @@ import { configModuleOptions } from './config/config.options';
 import { BookModule } from './books/book.module';
 import { User } from './user/user.entity';
 import { Book } from './books/book.entity';
+import { TypeORMSession } from './database/session.entity';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
 	imports: [
@@ -21,7 +23,7 @@ import { Book } from './books/book.entity';
 				username: configService.get('POSTGRES_USER'),
 				password: configService.get('POSTGRES_PASSWORD'),
 				database: configService.get('POSTGRES_DB'),
-				entities: [User, Book],
+				entities: [User, Book, TypeORMSession],
 				// todo: setup migrations typeorm
 				synchronize: true,
 			})
@@ -29,6 +31,7 @@ import { Book } from './books/book.entity';
 		UserModule,
 		BookModule,
 		AuthModule,
+		DatabaseModule,
 		PassportModule.register({ session: true }),
 		ConfigModule.forRoot(configModuleOptions),
 	],
