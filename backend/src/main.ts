@@ -23,7 +23,6 @@ async function setupSession(app: INestApplication) {
 			cookie: {
 				maxAge: 1000 * 60 * 60 * 24 * 7,
 			},
-			name: configService.get('cookie.NAME'),
 			secret: configService.get('cookie.SECRET'),
 			resave: false,
 			saveUninitialized: false,

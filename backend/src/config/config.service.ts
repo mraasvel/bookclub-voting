@@ -13,8 +13,6 @@ export default () => ({
 	POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
 	POSTGRES_DB: process.env.POSTGRES_DB,
 	cookie: {
-		// TODO: make environment variables and random/secret
-		NAME: 'CookieName',
-		SECRET: 'CookieSecret',
+		SECRET: process.env.SESSION_SECRET,
 	},
 });
