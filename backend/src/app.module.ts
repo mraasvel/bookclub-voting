@@ -10,6 +10,9 @@ import { User } from './user/user.entity';
 import { Book } from './books/book.entity';
 import { TypeORMSession } from './database/session.entity';
 import { DatabaseModule } from './database/database.module';
+import { PollModule } from './poll/poll.module';
+import { Poll } from './poll/poll.entity';
+import { Vote } from './poll/vote.entity';
 
 @Module({
 	imports: [
@@ -23,7 +26,7 @@ import { DatabaseModule } from './database/database.module';
 				username: configService.get('POSTGRES_USER'),
 				password: configService.get('POSTGRES_PASSWORD'),
 				database: configService.get('POSTGRES_DB'),
-				entities: [User, Book, TypeORMSession],
+				entities: [User, Book, TypeORMSession, Poll, Vote],
 				// todo: setup migrations typeorm
 				synchronize: true,
 			}),
@@ -34,6 +37,7 @@ import { DatabaseModule } from './database/database.module';
 		DatabaseModule,
 		PassportModule.register({ session: true }),
 		ConfigModule.forRoot(configModuleOptions),
+		PollModule,
 	],
 	controllers: [],
 	providers: [],

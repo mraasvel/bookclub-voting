@@ -12,6 +12,17 @@ import { BookService } from './books/book.service';
 import getLogLevels from './util/getLogLevels';
 import { TypeormStore } from 'connect-typeorm/out';
 import { DatabaseService } from './database/database.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+async function setupSwagger(app: INestApplication) {
+	const configService = app.get(ConfigService);
+	const config = new DocumentBuilder()
+		.setTitle(configService.get('APP_NAME'))
+		.setVersion('0.1')
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	SwaggerModule.setup('api', app, document);
+}
 
 async function setupSession(app: INestApplication) {
 	const configService = app.get(ConfigService);
@@ -43,6 +54,9 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		logger: getLogLevels(process.env.NODE_ENV === 'production'),
 	});
+	if (process.env.NODE_ENV === 'development') {
+		await setupSwagger(app);
+	}
 	await setupSession(app);
 	app.enableCors({
 		origin: ['http://localhost:8080'],
