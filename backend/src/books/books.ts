@@ -1,4 +1,5 @@
 // todo: just hardcode all available books?
+// todo: set up voting entity and let users enter options
 
 interface IBook {
 	name: string;

@@ -12,7 +12,7 @@ import {
 import { Response } from 'express';
 import { IntraGuard } from './intra.guard';
 import { AuthenticatedState } from './auth.types';
-import { AuthenticatedGuard } from './auth.guard';
+import { AuthenticatedGuard } from '../guards/auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { OAuthExceptionFilter } from './auth.filter';
 

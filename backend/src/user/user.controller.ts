@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards, Req, Logger } from '@nestjs/common';
-import { AuthenticatedGuard } from 'src/auth/auth.guard';
+import { AuthenticatedGuard } from 'src/guards/auth.guard';
 import { RequestWithUser } from 'src/auth/auth.types';
 import { User } from './user.entity';
 import { UserService } from './user.service';

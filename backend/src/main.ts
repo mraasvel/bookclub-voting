@@ -13,7 +13,6 @@ import getLogLevels from './util/getLogLevels';
 import { TypeormStore } from 'connect-typeorm/out';
 import { DatabaseService } from './database/database.service';
 
-// todo: fix deprecated usage, look at session docs, consider jwt maybe etc
 async function setupSession(app: INestApplication) {
 	const configService = app.get(ConfigService);
 	const databaseService = app.get(DatabaseService);
