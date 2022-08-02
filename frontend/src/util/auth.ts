@@ -18,5 +18,8 @@ export async function checkUserSession() {
 	const state = (await response.json()).state;
 	if (state === "AUTHENTICATED") {
 		useUserStore().setAuthenticated(true);
+		const me = await callApi("/user/me");
+		const userInfo = await me.json();
+		useUserStore().setRole(userInfo.role);
 	}
 }
