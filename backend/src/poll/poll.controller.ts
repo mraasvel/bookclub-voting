@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, NotImplementedException, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthenticatedGuard } from 'src/guards/auth.guard';
-import { SuperuserGuard } from 'src/guards/superuser.guard';
+import RoleGuard from 'src/guards/role.guard';
+import Role from 'src/user/role.enum';
 import { PollService } from './poll.service';
 import { PollDTO } from './poll.types';
 
@@ -27,13 +28,13 @@ export class PollController {
 	}
 
 	@Post()
-	@UseGuards(SuperuserGuard)
+	@UseGuards(RoleGuard(Role.SuperUser))
 	async createPoll(@Body() pollData: PollDTO) {
 		return await this.pollService.create(pollData);
 	}
 
 	@Delete(':id')
-	@UseGuards(SuperuserGuard)
+	@UseGuards(RoleGuard(Role.SuperUser))
 	async deletePoll(@Param('id', ParseIntPipe) id: number) {
 		return await this.pollService.delete(id);
 	}

@@ -1,15 +1,23 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import Role from './role.enum';
 
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn()
-	id: number;
+	public id: number;
 
 	@Exclude()
 	@Column()
-	intraId: string;
+	public intraId: string;
 
 	@Column({ unique: true })
-	username: string;
+	public username: string;
+
+	@Column({
+		type: 'enum',
+		enum: Role,
+		default: Role.User,
+	})
+	public role: Role;
 }

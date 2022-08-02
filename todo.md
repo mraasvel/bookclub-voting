@@ -1,5 +1,4 @@
 # todo
-- add rights to user in entity (enumeration: NORMAL, SUPERUSER)
 - create vote page for admin (only if SUPERUSER)
 - relations setup for voting
 - endpoints for actual voting functionality
@@ -12,3 +11,5 @@
 - style vote creation page
 - orm migration instead of synch
 	- https://wanago.io/2019/01/28/typeorm-migrations-postgres/
+
+- proper HTTP response codes
