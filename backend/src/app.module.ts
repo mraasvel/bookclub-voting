@@ -5,9 +5,7 @@ import { UserModule } from './user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configModuleOptions } from './config/config.options';
-import { BookModule } from './books/book.module';
 import { User } from './user/user.entity';
-import { Book } from './books/book.entity';
 import { TypeORMSession } from './database/session.entity';
 import { DatabaseModule } from './database/database.module';
 import { PollModule } from './poll/poll.module';
@@ -26,13 +24,12 @@ import { Vote } from './poll/vote.entity';
 				username: configService.get('POSTGRES_USER'),
 				password: configService.get('POSTGRES_PASSWORD'),
 				database: configService.get('POSTGRES_DB'),
-				entities: [User, Book, TypeORMSession, Poll, Vote],
+				entities: [User, TypeORMSession, Poll, Vote],
 				// todo: setup migrations typeorm
 				synchronize: true,
 			}),
 		}),
 		UserModule,
-		BookModule,
 		AuthModule,
 		DatabaseModule,
 		PassportModule.register({ session: true }),

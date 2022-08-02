@@ -3,7 +3,6 @@
 		<p>You are the super user</p>
 	</div>
 	<UserInfo />
-	<BooksList />
 	<button @click="logout">Logout</button>
 </template>
 
@@ -14,7 +13,6 @@ import Role from "@/util/backend.types";
 import { mapState } from "pinia";
 import { defineComponent } from "vue";
 import UserInfo from "../components/UserInfo.vue";
-import BooksList from "../components/BooksList.vue";
 
 export default defineComponent({
 	computed: {
@@ -28,6 +26,6 @@ export default defineComponent({
 			logoutUser();
 		},
 	},
-	components: { UserInfo, BooksList }
+	components: { UserInfo }
 });
 </script>

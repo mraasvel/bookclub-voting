@@ -1,7 +1,8 @@
 # todo
-- relations setup for voting
-- endpoints for actual voting functionality
 - page for voting, comitting to vote as described in specification
+- relations setup for voting in database
+- endpoints for actual voting functionality
+- timeout or manual cancel for voting (ends at point in time)
 
 - styling -- vue prime or some other library
 - style login page

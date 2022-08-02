@@ -83,7 +83,7 @@ export default defineComponent({
 			this.options = [];
 			const { id } = await response.json();
 			const websiteUrl = import.meta.env.VITE_WEBSITE_URL;
-			this.link = `${websiteUrl}/poll/${id}`;
+			this.link = `${websiteUrl}/vote/${id}`;
 		},
 		copyLink() {
 			navigator.clipboard.writeText(this.link);
