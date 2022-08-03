@@ -1,4 +1,11 @@
-import { ArrayNotEmpty, IsArray, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+	ArrayNotEmpty,
+	IsArray,
+	IsInt,
+	IsNotEmpty,
+	IsNumber,
+	IsString,
+} from 'class-validator';
 
 export class PollDTO {
 	@IsString()
@@ -18,6 +25,6 @@ export class VoteDTO {
 
 	@IsArray()
 	@ArrayNotEmpty()
-	@IsInt({ each: true})
+	@IsInt({ each: true })
 	scores: number[];
 }

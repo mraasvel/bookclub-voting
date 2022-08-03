@@ -12,7 +12,7 @@ export class Poll {
 	@Column()
 	name: string;
 
-	@Column("text", { array: true })
+	@Column('text', { array: true })
 	options: string[];
 
 	@OneToMany(() => Vote, (vote: Vote) => vote.poll, {

@@ -8,7 +8,7 @@
 			<h3>Poll Name </h3>
 			<input type="text" v-model="name">
 			<h3>Poll Options</h3>
-			<div v-for="option in options">
+			<div v-for="(option, index) in options" :key="index">
 				<input v-model="option.text">
 			</div>
 			<button @click="extraOption">add more</button>
@@ -38,7 +38,7 @@ interface Model {
 }
 
 function initOptions(n: number) {
-	let result = [];
+	const result = [];
 	for (let i = 0; i < n; i++) {
 		result.push({ text: "" });
 	}
@@ -46,7 +46,7 @@ function initOptions(n: number) {
 }
 
 function isEmpty(array: Text[]) {
-	for (let x of array) {
+	for (const x of array) {
 		if (x.text.length > 0) {
 			return false;
 		}

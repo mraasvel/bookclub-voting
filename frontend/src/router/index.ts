@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from "@/views/Home.vue";
+import HomeView from "@/views/HomeView.vue";
 import CreatePoll from "@/components/CreatePoll.vue";
 import NotFound from "@/components/NotFound.vue";
 import VoteComponent from "@/components/VoteComponent.vue";
@@ -10,7 +10,7 @@ const router = createRouter({
 		{
 			path: "/",
 			name: "home",
-			component: Home
+			component: HomeView
 		},
 		{
 			path: "/poll",

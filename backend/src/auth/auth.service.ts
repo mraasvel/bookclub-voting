@@ -4,7 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { IntraUser } from 'src/user/user.types';
 
 function isSuperUser(user: IntraUser) {
-	const superUsers = ["mraasvel"];
+	const superUsers = ['mraasvel'];
 	return superUsers.includes(user.username);
 }
 

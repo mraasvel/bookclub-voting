@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	Logger,
+	NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +17,7 @@ export class PollService {
 
 	constructor(
 		@InjectRepository(Poll) private pollRepository: Repository<Poll>,
-		@InjectRepository(Vote) private voteRepository: Repository<Vote>
+		@InjectRepository(Vote) private voteRepository: Repository<Vote>,
 	) {}
 
 	async find() {
@@ -41,23 +46,25 @@ export class PollService {
 	}
 
 	async vote(pollId: number, user: User, scores: number[]) {
-		for (let score of scores) {
+		for (const score of scores) {
 			if (score < 1 || score > 5) {
-				throw new BadRequestException("invalid score value");
+				throw new BadRequestException('invalid score value');
 			}
 		}
 		const poll = await this.findById(pollId);
-		this.logger.debug(`Submit Vote: ${JSON.stringify(user)} -- ${JSON.stringify(poll)}`);
+		this.logger.debug(
+			`Submit Vote: ${JSON.stringify(user)} -- ${JSON.stringify(poll)}`,
+		);
 		if (poll.options.length !== scores.length) {
-			throw new BadRequestException("invalid scores length");
+			throw new BadRequestException('invalid scores length');
 		}
 		const vote = this.voteRepository.create({
 			user: user.id,
 			poll: poll.id,
-			scores
+			scores,
 		});
 		return await this.voteRepository.upsert(vote, {
-			conflictPaths: ["user", "poll"],
+			conflictPaths: ['user', 'poll'],
 			skipUpdateIfNoValuesChanged: true,
 		});
 	}

@@ -14,9 +14,9 @@ import { useUserStore } from "./stores/user";
 import LoginPage from "./components/LoginPage.vue";
 
 export default defineComponent({
-    computed: {
-        ...mapState(useUserStore, ["isAuthenticated"]),
-    },
-    components: { LoginPage }
+	computed: {
+		...mapState(useUserStore, ["isAuthenticated"]),
+	},
+	components: { LoginPage }
 });
 </script>

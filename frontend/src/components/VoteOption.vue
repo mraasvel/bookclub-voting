@@ -34,7 +34,7 @@ export default defineComponent({
 		}
 	},
 	watch: {
-		picked(newValue: number, _: number) {
+		picked(newValue: number) {
 			this.$emit("updateScore", newValue + 1);
 		}
 	}

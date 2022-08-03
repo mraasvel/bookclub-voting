@@ -23,25 +23,25 @@ interface Score {
 }
 
 export default defineComponent({
-    data(): Model {
-        return {
-            poll: {
-                id: 0,
-                name: "",
-                options: [],
-                votes: []
-            },
-            scores: [],
-        };
-    },
-    props: {
-        pollId: Number,
-    },
-    methods: {
-        async loadData(id: number) {
-            const response = await callApi(`/poll/${id}`);
-            this.poll = await response.json();
-			for (let vote of this.poll.votes) {
+	data(): Model {
+		return {
+			poll: {
+				id: 0,
+				name: "",
+				options: [],
+				votes: []
+			},
+			scores: [],
+		};
+	},
+	props: {
+		pollId: Number,
+	},
+	methods: {
+		async loadData(id: number) {
+			const response = await callApi(`/poll/${id}`);
+			this.poll = await response.json();
+			for (const vote of this.poll.votes) {
 				for (let i = 0; i < vote.scores.length; i++) {
 					if (this.scores.length <= i) {
 						this.scores.push({
@@ -53,17 +53,17 @@ export default defineComponent({
 					this.scores[i].voteCounts[index] += 1;
 				}
 			}
-        }
-    },
-    mounted() {
-        this.$nextTick(() => {
-            if (this.pollId === undefined) {
-                console.error("cannot load data", this.pollId);
-                return;
-            }
-            this.loadData(this.pollId);
-        });
-    },
-    components: { ResultScores }
+		}
+	},
+	mounted() {
+		this.$nextTick(() => {
+			if (this.pollId === undefined) {
+				console.error("cannot load data", this.pollId);
+				return;
+			}
+			this.loadData(this.pollId);
+		});
+	},
+	components: { ResultScores }
 });
 </script>

@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, NotImplementedException, Param, ParseIntPipe, Post, Req, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	ParseIntPipe,
+	Post,
+	Req,
+	UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RequestWithUser } from 'src/auth/auth.types';
 import { AuthenticatedGuard } from 'src/guards/auth.guard';
@@ -25,7 +35,11 @@ export class PollController {
 
 	@Post('vote')
 	async vote(@Req() req: RequestWithUser, @Body() voteData: VoteDTO) {
-		return await this.pollService.vote(voteData.pollId, req.user, voteData.scores);
+		return await this.pollService.vote(
+			voteData.pollId,
+			req.user,
+			voteData.scores,
+		);
 	}
 
 	@Post()

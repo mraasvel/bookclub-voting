@@ -1,5 +1,5 @@
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Poll } from './poll.entity';
 
 // Vote will be rated 1-5
@@ -22,6 +22,6 @@ export class Vote {
 	})
 	poll: number;
 
-	@Column("smallint", { array: true })
+	@Column('smallint', { array: true })
 	scores: number[];
 }
