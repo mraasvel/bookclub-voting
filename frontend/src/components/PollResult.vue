@@ -41,14 +41,14 @@ export default defineComponent({
 		async loadData(id: number) {
 			const response = await callApi(`/poll/${id}`);
 			this.poll = await response.json();
+			for (const option of this.poll.options) {
+				this.scores.push({
+					option,
+					voteCounts: [0,0,0,0,0]
+				});
+			}
 			for (const vote of this.poll.votes) {
 				for (let i = 0; i < vote.scores.length; i++) {
-					if (this.scores.length <= i) {
-						this.scores.push({
-							option: this.poll.options[i],
-							voteCounts: [0,0,0,0,0],
-						});
-					}
 					const index = vote.scores[i] - 1;
 					this.scores[i].voteCounts[index] += 1;
 				}
