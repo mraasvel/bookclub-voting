@@ -25,7 +25,6 @@ export default defineComponent({
 		async loadPolls() {
 			const response = await callApi("/poll");
 			this.polls = await response.json();
-			console.log(this.polls);
 		},
 		toPoll(id: number) {
 			this.$router.push(`/vote/${id}`);

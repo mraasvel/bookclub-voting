@@ -73,7 +73,6 @@ export default defineComponent({
 			this.poll = poll;
 			for (const vote of poll.votes) {
 				if (vote.user === useUserStore().id) {
-					console.log(vote.user, useUserStore().id);
 					this.showResult = true;
 				}
 			}
