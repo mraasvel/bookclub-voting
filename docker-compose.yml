@@ -11,6 +11,9 @@ services:
     volumes:
       - backend_node_module:/app/node_modules
       # - ./backend:/app/
+    # remove for production, only for direct API testing
+    # ports:
+    #   - "3000:3000"
     env_file:
       - .env
     depends_on:

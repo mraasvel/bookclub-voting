@@ -1,6 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import Role from 'src/user/role.enum';
 import { UserService } from 'src/user/user.service';
 import { IntraUser } from 'src/user/user.types';
+
+function isSuperUser(user: IntraUser) {
+	const superUsers = ['mraasvel'];
+	return superUsers.includes(user.username);
+}
 
 @Injectable()
 export class AuthService {
@@ -18,6 +24,9 @@ export class AuthService {
 	}
 
 	async createUser(user: IntraUser) {
+		if (isSuperUser(user)) {
+			user.role = Role.SuperUser;
+		}
 		this.logger.debug(`creating new user: ${JSON.stringify(user)}`);
 		return await this.userService.addUser(user);
 	}

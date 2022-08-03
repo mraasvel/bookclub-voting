@@ -1,8 +1,14 @@
 # todo
-- fix backend session
-- orm migration instead of synch
-- make some simply specification for voting process
-- set up voting logic
+- run linter + test production + PR
 
-# future
-- generic voting: fill in some form in some format with options and generic voting customizability
+- styling -- vue prime or some other library
+- style login page
+- style voting page
+- style vote result page
+- style vote creation page
+- orm migration instead of synch
+	- https://wanago.io/2019/01/28/typeorm-migrations-postgres/
+
+- timeout or manual cancel for voting (ends at point in time)
+- home page with links etc
+- proper HTTP response codes

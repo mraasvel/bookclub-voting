@@ -8,12 +8,21 @@ import { AppModule } from './app.module';
 import * as passport from 'passport';
 import * as session from 'express-session';
 import { ConfigService } from '@nestjs/config';
-import { BookService } from './books/book.service';
 import getLogLevels from './util/getLogLevels';
 import { TypeormStore } from 'connect-typeorm/out';
 import { DatabaseService } from './database/database.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-// todo: fix deprecated usage, look at session docs, consider jwt maybe etc
+async function setupSwagger(app: INestApplication) {
+	const configService = app.get(ConfigService);
+	const config = new DocumentBuilder()
+		.setTitle(configService.get('APP_NAME'))
+		.setVersion('0.1')
+		.build();
+	const document = SwaggerModule.createDocument(app, config);
+	SwaggerModule.setup('api', app, document);
+}
+
 async function setupSession(app: INestApplication) {
 	const configService = app.get(ConfigService);
 	const databaseService = app.get(DatabaseService);
@@ -35,15 +44,13 @@ async function setupSession(app: INestApplication) {
 	app.use(passport.session());
 }
 
-async function seed(app: INestApplication) {
-	const bookService = app.get(BookService);
-	await bookService.seedDatabase();
-}
-
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		logger: getLogLevels(process.env.NODE_ENV === 'production'),
 	});
+	if (process.env.NODE_ENV === 'development') {
+		await setupSwagger(app);
+	}
 	await setupSession(app);
 	app.enableCors({
 		origin: ['http://localhost:8080'],
@@ -54,7 +61,6 @@ async function bootstrap() {
 	app.useGlobalInterceptors(
 		new ClassSerializerInterceptor(app.get(Reflector)),
 	);
-	await seed(app);
 	await app.listen(3000);
 }
 bootstrap();
