@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import callApi from "@/util/api";
+import callApi, { callApiJson } from "@/util/api";
 import { defineComponent } from "vue";
 import VoteOption from "./VoteOption.vue";
 
@@ -26,6 +26,11 @@ interface Model {
 	name: string;
 	options: VoteOption[];
 	error: string;
+}
+
+interface VoteDTO {
+	pollId: number;
+	scores: number[];
 }
 
 export default defineComponent({
@@ -55,8 +60,18 @@ export default defineComponent({
             this.options = options.map((text) => { return { text, score: 3 }; });
             this.name = name;
         },
-		submit() {
+		async submit() {
 			console.log("submit:", this.options);
+            if (typeof this.$route.params.id !== 'string') {
+                return;
+            }
+            const id = parseInt(this.$route.params.id);
+            const vote: VoteDTO = {
+                pollId: id,
+                scores: this.options.map((option) => option.score),
+            };
+            const response = await callApiJson("/poll/vote", "POST", vote as unknown as Record<string, unknown>);
+            console.log(await response.json());
 		}
     },
     mounted() {

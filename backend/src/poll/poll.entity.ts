@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Vote } from './vote.entity';
 
 // one to many relation with votes
 
@@ -13,4 +14,9 @@ export class Poll {
 
 	@Column("text", { array: true })
 	options: string[];
+
+	@OneToMany(() => Vote, (vote: Vote) => vote.poll, {
+		eager: true,
+	})
+	votes: Vote[];
 }

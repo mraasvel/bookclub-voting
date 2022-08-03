@@ -1,8 +1,7 @@
 # todo
-- page for voting, comitting to vote as described in specification
-- relations setup for voting in database
-- endpoints for actual voting functionality
-- timeout or manual cancel for voting (ends at point in time)
+- homepage with list of open votes
+- show vote result page (frontend needs to know if user voted on a page)
+- button to go back and redo vote or show results when voting
 
 - styling -- vue prime or some other library
 - style login page
@@ -12,6 +11,6 @@
 - orm migration instead of synch
 	- https://wanago.io/2019/01/28/typeorm-migrations-postgres/
 
+- timeout or manual cancel for voting (ends at point in time)
 - home page with links etc
-- vue router: not found page or redirect
 - proper HTTP response codes

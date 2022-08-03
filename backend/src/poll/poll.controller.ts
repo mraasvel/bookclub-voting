@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, NotImplementedException, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotImplementedException, Param, ParseIntPipe, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { RequestWithUser } from 'src/auth/auth.types';
 import { AuthenticatedGuard } from 'src/guards/auth.guard';
 import RoleGuard from 'src/guards/role.guard';
 import Role from 'src/user/role.enum';
 import { PollService } from './poll.service';
-import { PollDTO } from './poll.types';
+import { PollDTO, VoteDTO } from './poll.types';
 
 @Controller('poll')
 @ApiTags('Poll')
@@ -22,9 +23,9 @@ export class PollController {
 		return await this.pollService.findById(id);
 	}
 
-	@Post('vote/:id')
-	async vote(@Param('id', ParseIntPipe) id: number) {
-		throw new NotImplementedException();
+	@Post('vote')
+	async vote(@Req() req: RequestWithUser, @Body() voteData: VoteDTO) {
+		return await this.pollService.vote(voteData.pollId, req.user, voteData.scores);
 	}
 
 	@Post()

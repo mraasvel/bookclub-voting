@@ -20,10 +20,13 @@ const router = createRouter({
 		{
 			path: "/vote/:id",
 			name: "vote",
-			// todo: make PollView
 			component: VoteComponent,
 		},
-		{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+		{
+			path: '/:pathMatch(.*)*',
+			name: 'NotFound',
+			component: NotFound
+		},
 	]
 })
 

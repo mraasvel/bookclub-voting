@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import Role from './role.enum';
+import { Vote } from 'src/poll/vote.entity';
 
 @Entity()
 export class User {
@@ -20,4 +21,7 @@ export class User {
 		default: Role.User,
 	})
 	public role: Role;
+
+	@OneToMany(() => Vote, (vote: Vote) => vote.user)
+	votes: Vote[];
 }
