@@ -21,5 +21,6 @@ export async function checkUserSession() {
 		const me = await callApi("/user/me");
 		const userInfo = await me.json();
 		useUserStore().setRole(userInfo.role);
+		useUserStore().setId(userInfo.id);
 	}
 }

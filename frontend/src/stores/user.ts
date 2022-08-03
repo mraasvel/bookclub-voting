@@ -1,4 +1,4 @@
-import Role from '@/util/backend.types';
+import { Role } from '@/util/backend.types';
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore({
@@ -7,6 +7,7 @@ export const useUserStore = defineStore({
 		return {
 			isAuthenticated: false,
 			role: Role.User,
+			id: 0,
 		}
 	},
 	actions: {
@@ -15,6 +16,9 @@ export const useUserStore = defineStore({
 		},
 		setRole(role: Role) {
 			this.role = role;
-		}
+		},
+		setId(id: number) {
+			this.id = id;
+		},
 	},
 })

@@ -2,20 +2,28 @@
 	<div v-if="error">
 		<p> {{ error }}</p>
 	</div>
+    <div v-else-if="showResult">
+        <PollResult :pollId="poll.id" />
+        <button @click="showResult = !showResult">back to vote</button>
+    </div>
 	<div v-else>
-		<h3> {{ name }} </h3>
-		<div v-for="(option, index) in options">
+		<h3> {{ poll.name }} </h3>
+		<div v-for="(option, index) in options" :key="index">
 			<VoteOption :name="option.text" :score="option.score" @update-score="(score) => { option.score = score; }" />
 		</div>
 		<br />
 		<button @click="submit">submit vote</button>
+		<button @click="showResult = !showResult">view result</button>
 	</div>
 </template>
 
 <script lang="ts">
 import callApi, { callApiJson } from "@/util/api";
+import type { Poll } from "@/util/backend.types";
 import { defineComponent } from "vue";
 import VoteOption from "./VoteOption.vue";
+import PollResult from "./PollResult.vue";
+import { useUserStore } from "@/stores/user";
 
 interface VoteOption {
 	text: string;
@@ -23,9 +31,10 @@ interface VoteOption {
 }
 
 interface Model {
-	name: string;
-	options: VoteOption[];
+    poll: Poll;
+    options: VoteOption[];
 	error: string;
+    showResult: boolean,
 }
 
 interface VoteDTO {
@@ -36,9 +45,15 @@ interface VoteDTO {
 export default defineComponent({
     data(): Model {
         return {
-            name: "",
+            poll: {
+                id: 0,
+                name: "",
+                options: [],
+                votes: [],
+            },
             options: [],
             error: "",
+            showResult: false,
         };
     },
     methods: {
@@ -53,15 +68,17 @@ export default defineComponent({
                 this.error = "failed to fetch vote";
                 return;
             }
-            const { name, options }: {
-                name: string;
-                options: string[];
-            } = await response.json();
-            this.options = options.map((text) => { return { text, score: 3 }; });
-            this.name = name;
+            const poll: Poll = await response.json();
+            this.options = poll.options.map((text) => { return { text, score: 3 }; });
+            this.poll = poll;
+            for (let vote of poll.votes) {
+                if (vote.user === useUserStore().id) {
+                    console.log(vote.user, useUserStore().id);
+                    this.showResult = true;
+                }
+            }
         },
 		async submit() {
-			console.log("submit:", this.options);
             if (typeof this.$route.params.id !== 'string') {
                 return;
             }
@@ -71,12 +88,16 @@ export default defineComponent({
                 scores: this.options.map((option) => option.score),
             };
             const response = await callApiJson("/poll/vote", "POST", vote as unknown as Record<string, unknown>);
-            console.log(await response.json());
+            if (!response.ok) {
+                this.error = "failed to vote";
+                return;
+            }
+            this.showResult = true;
 		}
     },
     mounted() {
         this.loadData();
     },
-    components: { VoteOption }
+    components: { VoteOption, PollResult }
 });
 </script>

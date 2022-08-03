@@ -1,7 +1,5 @@
 # todo
-- homepage with list of open votes
-- show vote result page (frontend needs to know if user voted on a page)
-- button to go back and redo vote or show results when voting
+- run linter + test production + PR
 
 - styling -- vue prime or some other library
 - style login page

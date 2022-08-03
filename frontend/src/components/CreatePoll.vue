@@ -23,7 +23,7 @@
 <script lang="ts">
 import { useUserStore } from "@/stores/user";
 import { callApiJson } from "@/util/api";
-import Role from "@/util/backend.types";
+import { Role } from "@/util/backend.types";
 import { defineComponent } from "vue";
 
 interface Text {

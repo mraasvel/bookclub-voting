@@ -1,18 +1,19 @@
 <template>
 	<div v-if="isSuperUser">
 		<p>You are the super user</p>
+		<button @click="goToPoll">new poll</button>
 	</div>
-	<UserInfo />
 	<button @click="logout">Logout</button>
+	<PollList />
 </template>
 
 <script lang="ts">
 import { useUserStore } from "@/stores/user";
 import { logout as logoutUser } from "@/util/auth";
-import Role from "@/util/backend.types";
+import { Role } from "@/util/backend.types";
 import { mapState } from "pinia";
 import { defineComponent } from "vue";
-import UserInfo from "../components/UserInfo.vue";
+import PollList from "@/components/PollList.vue";
 
 export default defineComponent({
 	computed: {
@@ -22,10 +23,13 @@ export default defineComponent({
 		},
 	},
 	methods: {
+		goToPoll() {
+			this.$router.push("/poll");
+		},
 		logout() {
 			logoutUser();
 		},
 	},
-	components: { UserInfo }
+	components: { PollList }
 });
 </script>
