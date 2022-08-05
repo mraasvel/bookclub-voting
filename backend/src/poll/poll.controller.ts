@@ -33,6 +33,12 @@ export class PollController {
 		return await this.pollService.findById(id);
 	}
 
+	@Get('complete/:id')
+	@UseGuards(RoleGuard(Role.SuperUser))
+	async getPollByIdWithVotes(@Param('id', ParseIntPipe) id: number) {
+		return await this.pollService.findByIdWithUsers(id);
+	}
+
 	@Post('vote')
 	async vote(@Req() req: RequestWithUser, @Body() voteData: VoteDTO) {
 		return await this.pollService.vote(

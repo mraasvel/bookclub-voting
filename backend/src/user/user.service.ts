@@ -35,4 +35,8 @@ export class UserService {
 	async findByIntraId(user: IntraUser) {
 		return await this.userRepository.findOneBy({ intraId: user.intraId });
 	}
+
+	async findAll(): Promise<User[]> {
+		return await this.userRepository.find();
+	}
 }
