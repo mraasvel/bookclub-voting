@@ -33,10 +33,11 @@ export class PollService {
 	}
 
 	async findByIdWithUsers(id: number) {
-		const poll = await this.pollRepository.createQueryBuilder("poll")
-			.innerJoinAndSelect("poll.votes", "votes")
-			.innerJoinAndSelect("votes.user", "user")
-			.andWhere("poll.id = :id", { id })
+		const poll = await this.pollRepository
+			.createQueryBuilder('poll')
+			.innerJoinAndSelect('poll.votes', 'votes')
+			.innerJoinAndSelect('votes.user', 'user')
+			.andWhere('poll.id = :id', { id })
 			.getOneOrFail();
 		return poll;
 	}
