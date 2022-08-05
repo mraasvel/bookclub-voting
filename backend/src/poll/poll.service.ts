@@ -32,6 +32,16 @@ export class PollService {
 		return poll;
 	}
 
+	async findByIdWithUsers(id: number) {
+		const poll = await this.pollRepository
+			.createQueryBuilder('poll')
+			.innerJoinAndSelect('poll.votes', 'votes')
+			.innerJoinAndSelect('votes.user', 'user')
+			.andWhere('poll.id = :id', { id })
+			.getOneOrFail();
+		return poll;
+	}
+
 	async create(pollData: PollDTO) {
 		const entity = this.pollRepository.create(pollData);
 		this.logger.debug(`make poll: ${JSON.stringify(entity)}`);
@@ -43,6 +53,7 @@ export class PollService {
 		if (!poll) {
 			throw new NotFoundException();
 		}
+		return poll;
 	}
 
 	async vote(pollId: number, user: User, scores: number[]) {
