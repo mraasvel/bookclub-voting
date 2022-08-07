@@ -9,6 +9,7 @@ import { checkUserSession } from './util/auth'
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import "primeflex/primeflex.css";
 
 async function bootstrap() {
 	const app = createApp(App);
