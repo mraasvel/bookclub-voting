@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
 import CreatePoll from "@/components/CreatePoll.vue";
 import NotFound from "@/components/NotFound.vue";
-import VoteComponent from "@/components/VoteComponent.vue";
+import VoteView from "@/views/VoteView.vue";
 import AdminView from '@/views/AdminView.vue';
 import VoteListView from '@/views/VoteListView.vue';
 import { useUserStore } from '@/stores/user';
@@ -34,7 +34,7 @@ const router = createRouter({
 		{
 			path: "/vote/:id",
 			name: "vote",
-			component: VoteComponent,
+			component: VoteView,
 		},
 		{
 			path: '/:pathMatch(.*)*',
