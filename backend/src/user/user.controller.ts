@@ -22,7 +22,7 @@ export class UserController {
 		return user;
 	}
 
-	@Get('user')
+	@Get()
 	@UseGuards(RoleGuard(Role.SuperUser))
 	async getAllUsers() {
 		return this.userService.findAll();
