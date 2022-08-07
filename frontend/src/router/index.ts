@@ -4,6 +4,7 @@ import CreatePoll from "@/components/CreatePoll.vue";
 import NotFound from "@/components/NotFound.vue";
 import VoteComponent from "@/components/VoteComponent.vue";
 import AdminView from '@/views/AdminView.vue';
+import VoteListView from '@/views/VoteListView.vue';
 import { useUserStore } from '@/stores/user';
 import { Role } from '@/util/backend.types';
 
@@ -24,6 +25,11 @@ const router = createRouter({
 			path: "/poll",
 			name: "create-poll",
 			component: CreatePoll,
+		},
+		{
+			path: "/vote",
+			name: "vote-view",
+			component: VoteListView,
 		},
 		{
 			path: "/vote/:id",

@@ -35,7 +35,6 @@ export default defineComponent({
 }
 
 .center {
-  margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;

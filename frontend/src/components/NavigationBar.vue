@@ -28,8 +28,12 @@ export default defineComponent({
 					to: '/'
 				},
 				{
-					label: 'Admin',
+					label: 'Vote',
 					icon: 'pi pi-pencil',
+					to: '/vote',
+				},
+				{
+					label: 'Admin',
 					to: '/admin',
 					visible: () => this.isSuperUser,
 				},

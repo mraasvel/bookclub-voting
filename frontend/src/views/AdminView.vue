@@ -1,18 +1,27 @@
 <template>
 	<div>
-		<button @click="goToPoll">new poll</button>
+		<Button class="b p-button-rounded p-button-outlined p-button-raised p-button-text" label="Create Poll" @click="goToPoll" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Button from "primevue/button";
 
 export default defineComponent({
 	methods: {
 		goToPoll() {
-			console.log("poll");
 			this.$router.push("/poll");
 		}
-	}
+	},
+	components: {
+		Button,
+	},
 });
 </script>
+
+<style>
+.b {
+	margin-top: 5px;
+}
+</style>

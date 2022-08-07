@@ -1,13 +1,13 @@
 # todo
 
-- style voting page
+- style voting page (performing vote)
 - style vote result page
 - style home, vote listing page
 - sort vote result page by total score?
 - style admin page: menu selector for current component (create tab, active sessions with cancel, goto etc)
 - style vote creation page
+- show 'currently winning' in vote listing
 
-- Bar to navigate from homepage, api docs, votes, reading-list, logout, etc
 - Ability to halt votes you created, expiration date or duration at start of vote
 
 - API key support (use JWT instead of session => auth token makes more sense in this context)

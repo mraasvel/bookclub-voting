@@ -1,8 +1,6 @@
 <template>
-	<h3> Open Votes </h3>
-	<div v-for="poll in polls" :key="poll.id">
-		<button @click="toPoll(poll.id)"> {{ poll.name }} </button>
-		<p> Number of votes: {{ poll.votes.length }}</p>
+	<div>
+		<VoteList label="Open Votes" :model="votes" />
 	</div>
 </template>
 
@@ -10,28 +8,27 @@
 import callApi from "@/util/api";
 import type { Poll } from "@/util/backend.types";
 import { defineComponent } from "vue";
+import VoteList from "../components/VoteList.vue";
 
 interface Model {
-	polls: Poll[]
+	votes: Poll[];
 }
 
 export default defineComponent({
 	data(): Model {
 		return {
-			polls: []
+			votes: []
 		};
 	},
 	methods: {
 		async loadPolls() {
 			const response = await callApi("/poll");
-			this.polls = await response.json();
-		},
-		toPoll(id: number) {
-			this.$router.push(`/vote/${id}`);
+			this.votes = await response.json();
 		},
 	},
 	mounted() {
 		this.loadPolls();
 	},
+	components: { VoteList }
 });
 </script>
