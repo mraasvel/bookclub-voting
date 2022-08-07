@@ -1,6 +1,5 @@
 # todo
 
-- styling -- vue prime or some other library
 - add some router bar to navigate
 - style login page
 - style voting page
