@@ -1,11 +1,11 @@
 # todo
 
-- add some router bar to navigate
-- style login page
 - style voting page
 - style vote result page
-- style vote creation page
+- style home, vote listing page
 - sort vote result page by total score?
+- style admin page: menu selector for current component (create tab, active sessions with cancel, goto etc)
+- style vote creation page
 
 - Bar to navigate from homepage, api docs, votes, reading-list, logout, etc
 - Ability to halt votes you created, expiration date or duration at start of vote

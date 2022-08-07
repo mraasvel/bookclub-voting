@@ -7,7 +7,7 @@
 			Codam Book Club
 		</template>
 		<template #content>
-			<Button label="Login" @click="login" />
+			<Button label="Login" class="p-button-text p-button-raised p-button-plain" @click="login" />
 		</template>
 	</Card>
 </template>

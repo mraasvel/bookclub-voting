@@ -13,10 +13,10 @@ import "primeflex/primeflex.css";
 
 async function bootstrap() {
 	const app = createApp(App);
-	app.use(router);
 	app.use(createPinia());
-	app.use(PrimeVue);
 	await checkUserSession();
+	app.use(router);
+	app.use(PrimeVue);
 	app.mount('#app')
 }
 

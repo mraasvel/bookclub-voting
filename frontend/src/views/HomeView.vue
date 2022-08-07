@@ -1,9 +1,4 @@
 <template>
-	<div v-if="isSuperUser">
-		<p>You are the super user</p>
-		<button @click="goToPoll">new poll</button>
-	</div>
-	<button @click="logout">Logout</button>
 	<PollList />
 </template>
 
