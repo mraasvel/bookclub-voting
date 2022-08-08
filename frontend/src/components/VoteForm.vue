@@ -10,7 +10,7 @@
 			</Column>
 		</DataTable>
 		<div class="submit-button">
-			<Button label="Submit Vote" :disabled="submitted" class="p-button-primary p-button-rounded" icon="pi pi-check" @click="submit" />
+			<PrimeButton label="Submit Vote" :disabled="submitted" class="p-button-primary p-button-rounded" icon="pi pi-check" @click="submit" />
 		</div>
 	</div>
 </template>
@@ -19,8 +19,7 @@
 import { defineComponent, type PropType } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import RadioButton from "primevue/radiobutton";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 
 interface Model {
 	categories: string[];
@@ -80,11 +79,11 @@ export default defineComponent({
 			this.$emit("submit", this.scores);
 			this.submitted = true;
 		},
-		resetScores(options: any[]) {
-			this.scores = options.map((_x) => 3);
+		resetScores(options: string[]) {
+			this.scores = options.map(() => 3);
 		},
 	},
-	components: { DataTable, Column, Button, RadioButton },
+	components: { DataTable, Column, PrimeButton },
 });
 </script>
 

@@ -7,7 +7,7 @@
 			Codam Book Club
 		</template>
 		<template #content>
-			<Button label="Login" class="p-button-text p-button-raised p-button-plain" @click="login" />
+			<PrimeButton label="Login" class="p-button-text p-button-raised p-button-plain" @click="login" />
 		</template>
 	</Card>
 </template>
@@ -15,7 +15,7 @@
 <script lang="ts">
 import { loginRedirect } from "@/util/auth";
 import { defineComponent } from "vue";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 import Card from "primevue/card";
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
 			loginRedirect();
 		}
 	},
-	components: { Button, Card },
+	components: { PrimeButton, Card },
 });
 </script>
 

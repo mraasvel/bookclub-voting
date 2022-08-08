@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<Button class="b p-button-rounded p-button-outlined p-button-raised p-button-text" label="Create Poll" @click="goToPoll" />
+		<PrimeButton class="b p-button-rounded p-button-outlined p-button-raised p-button-text" label="Create Poll" @click="goToPoll" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Button from "primevue/button";
+import PrimeButton from "primevue/button";
 
 export default defineComponent({
 	methods: {
@@ -15,7 +15,7 @@ export default defineComponent({
 		}
 	},
 	components: {
-		Button,
+		PrimeButton,
 	},
 });
 </script>

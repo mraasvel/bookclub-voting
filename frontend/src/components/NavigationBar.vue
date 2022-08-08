@@ -6,7 +6,7 @@
 			</template>
 			<template #end>
 				<div>
-					<Button label="Logout" class="p-button-text p-button-plain" @click="doLogout" />
+					<PrimeButton label="Logout" class="p-button-text p-button-plain" @click="doLogout" />
 				</div>
 			</template>
 		</Menubar>
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Menubar from 'primevue/menubar';
-import Button from 'primevue/button';
+import PrimeButton from 'primevue/button';
 import { useUserStore } from "@/stores/user";
 import { Role } from "@/util/backend.types";
 import { logout } from "@/util/auth";
@@ -53,6 +53,6 @@ export default defineComponent({
 			return useUserStore().role === Role.SuperUser;
 		},
 	},
-	components: { Menubar, Button },
+	components: { Menubar, PrimeButton },
 });
 </script>

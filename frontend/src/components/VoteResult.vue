@@ -47,14 +47,14 @@ export default defineComponent({
 		},
 		calculateAverages() {
 			let result  = [];
-			for (let option of this.poll.options) {
+			for (const option of this.poll.options) {
 				result.push({
 					rank: 0,
 					name: option,
 					score: 0,
 				});
 			}
-			for (let vote of this.poll.votes) {
+			for (const vote of this.poll.votes) {
 				for (let i = 0; i < vote.scores.length; i++) {
 					result[i].score += vote.scores[i];
 				}
