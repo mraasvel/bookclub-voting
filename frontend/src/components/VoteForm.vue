@@ -1,20 +1,17 @@
 <template>
-	<div>
-		<DataTable :value="value" dataKey="id" responsiveLayout="scroll">
+	<div v-if="isReady">
+		<DataTable :value="value" dataKey="id" :paginator="true" :rows="5">
 			<Column field="option" :header="label"></Column>
 
-			<Column header="hate it">
+			<Column v-for="(category, index) in categories" :key="index" :header="category">
 				<template #body="slotProps">
-					<RadioButton name="" :value="3" />
+					<input type="radio" :value="index + 1" v-model="scores[slotProps.data.id]">
 				</template>
 			</Column>
-			<Column header="dislike it">
-				<template #body="slotProps">
-					<RadioButton name="" :value="3" />
-				</template>
-			</Column>
-
 		</DataTable>
+		<div class="submit-button">
+			<Button label="Submit Vote" :disabled="submitted" class="p-button-primary p-button-rounded" icon="pi pi-check" @click="submit" />
+		</div>
 	</div>
 </template>
 
@@ -23,9 +20,12 @@ import { defineComponent, type PropType } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import RadioButton from "primevue/radiobutton";
+import Button from "primevue/button";
 
 interface Model {
 	categories: string[];
+	scores: number[];
+	submitted: boolean;
 }
 
 export default defineComponent({
@@ -39,12 +39,22 @@ export default defineComponent({
 			required: true,
 		},
 	},
+	emits: {
+		submit(scores: Array<number>) {
+			return scores.length > 0;
+		},
+	},
 	data(): Model {
 		return {
 			categories: ["hate it", "dislike it", "neutral", "like it", "love it"],
+			scores: [],
+			submitted: false,
 		}
 	},
 	computed: {
+		isReady() {
+			return this.options.length === this.scores.length
+		},
 		value() {
 			return this.options.map((option, index) => {
 				return {
@@ -54,6 +64,26 @@ export default defineComponent({
 			});
 		},
 	},
-	components: { DataTable, Column, RadioButton }
+	mounted() {
+		this.scores = this.options.map((_x) => 3);
+	},
+	methods: {
+		submit() {
+			if (this.scores.length !== this.options.length) {
+				return;
+			}
+			this.$emit("submit", this.scores);
+			this.submitted = true;
+		},
+	},
+	components: { DataTable, Column, Button, RadioButton },
 });
 </script>
+
+<style scoped>
+.submit-button {
+	margin: auto;
+	text-align: center;
+	padding: 10px;
+}
+</style>

@@ -1,9 +1,11 @@
 # todo
 
-- style voting page (performing vote)
 - style vote result page
-- style home, vote listing page
 - sort vote result page by total score?
+- `/didivote` endpoint for vote result?
+- combine vote and vote-result view
+
+- style home, add some description
 - style admin page: menu selector for current component (create tab, active sessions with cancel, goto etc)
 - style vote creation page
 - show 'currently winning' in vote listing

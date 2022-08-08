@@ -28,7 +28,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .LoginCard {
 	width: 40rem;
 	text-align: center;
