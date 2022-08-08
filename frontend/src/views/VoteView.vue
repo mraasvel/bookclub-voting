@@ -35,7 +35,7 @@ interface Model {
 	poll: Poll;
 	hasVoted: boolean;
 	display: "vote" | "result";
-	selectedDisplay: ViewOption;
+	selectedDisplay: ViewOption | null;
 	viewOptions: ViewOption[];
 }
 
@@ -50,7 +50,7 @@ export default defineComponent({
 			poll: { id: 0, name: "", options: [], votes: [] },
 			hasVoted: false,
 			display: "vote",
-			selectedDisplay: { name: "vote" },
+			selectedDisplay: null,
 			viewOptions: [
 				{ name: "vote" },
 				{ name: "result" },
@@ -73,7 +73,6 @@ export default defineComponent({
 				if (vote.user === useUserStore().id) {
 					this.hasVoted = true;
 					this.display = "result";
-					this.selectedDisplay.name = "result";
 				}
 			}
 		},
@@ -92,6 +91,8 @@ export default defineComponent({
 				return;
 			}
 			this.hasVoted = true;
+			this.display = "result";
+			this.selectedDisplay = null;
 		},
 	},
 	watch: {

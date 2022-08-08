@@ -65,7 +65,12 @@ export default defineComponent({
 		},
 	},
 	mounted() {
-		this.scores = this.options.map((_x) => 3);
+		this.resetScores(this.options);
+	},
+	watch: {
+		options(newVal: string[]) {
+			this.resetScores(newVal);
+		}
 	},
 	methods: {
 		submit() {
@@ -74,6 +79,9 @@ export default defineComponent({
 			}
 			this.$emit("submit", this.scores);
 			this.submitted = true;
+		},
+		resetScores(options: any[]) {
+			this.scores = options.map((_x) => 3);
 		},
 	},
 	components: { DataTable, Column, Button, RadioButton },

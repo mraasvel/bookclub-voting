@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<Menubar :model="items">
+			<template #start>
+				<img alt="logo" src="@/assets/images/BookclubIcon.png" height="60" class="mr-2">
+			</template>
 			<template #end>
 				<div>
 					<Button label="Logout" class="p-button-text p-button-plain" @click="doLogout" />
