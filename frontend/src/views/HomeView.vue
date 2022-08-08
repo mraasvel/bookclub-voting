@@ -1,35 +1,20 @@
 <template>
-	<div v-if="isSuperUser">
-		<p>You are the super user</p>
-		<button @click="goToPoll">new poll</button>
-	</div>
-	<button @click="logout">Logout</button>
-	<PollList />
+	<Card>
+		<template #title>
+			About
+		</template>
+		<template #content>
+			Welcome to the Codam Book Club website. This is where we vote on which books to read.
+			I will probably add more stuff and functionality in the future.
+		</template>
+	</Card>
 </template>
 
 <script lang="ts">
-import { useUserStore } from "@/stores/user";
-import { logout as logoutUser } from "@/util/auth";
-import { Role } from "@/util/backend.types";
-import { mapState } from "pinia";
 import { defineComponent } from "vue";
-import PollList from "@/components/PollList.vue";
+import Card from "primevue/card";
 
 export default defineComponent({
-	computed: {
-		...mapState(useUserStore, ["isAuthenticated"]),
-		isSuperUser() {
-			return useUserStore().role === Role.SuperUser;
-		},
-	},
-	methods: {
-		goToPoll() {
-			this.$router.push("/poll");
-		},
-		logout() {
-			logoutUser();
-		},
-	},
-	components: { PollList }
+	components: { Card },
 });
 </script>
