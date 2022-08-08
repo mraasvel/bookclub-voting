@@ -3,6 +3,7 @@
 		<template #header>
 			Results
 		</template>
+		<Column field="rank" header="Rank" :sortable="true" ></Column>
 		<Column field="name" header="Name" :sortable="true" ></Column>
 		<Column field="score" header="Average Score" :sortable="true" ></Column>
 	</DataTable>
@@ -48,6 +49,7 @@ export default defineComponent({
 			let result  = [];
 			for (let option of this.poll.options) {
 				result.push({
+					rank: 0,
 					name: option,
 					score: 0,
 				});
@@ -60,6 +62,20 @@ export default defineComponent({
 			for (let i = 0; i < result.length; i++) {
 				result[i].score /= this.poll.votes.length;
 			}
+			// rank by average score
+			result.sort((a, b) => {
+				if (a.score > b.score) {
+					return -1;
+				} else if (a.score < b.score) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+			result = result.map((x,index) => {
+				x.rank = index + 1;
+				return x;
+			})
 			return result;
 		},
 	},
