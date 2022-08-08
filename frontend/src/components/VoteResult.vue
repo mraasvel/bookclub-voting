@@ -20,6 +20,12 @@ interface Model {
 	poll: Poll;
 }
 
+interface Row {
+	rank: number;
+	name: string;
+	score: number | string;
+}
+
 export default defineComponent({
 	props: {
 		voteId: {
@@ -46,7 +52,7 @@ export default defineComponent({
 			this.poll = await response.json();
 		},
 		calculateAverages() {
-			let result  = [];
+			let result: Row[] = [];
 			for (const option of this.poll.options) {
 				result.push({
 					rank: 0,
@@ -56,11 +62,11 @@ export default defineComponent({
 			}
 			for (const vote of this.poll.votes) {
 				for (let i = 0; i < vote.scores.length; i++) {
-					result[i].score += vote.scores[i];
+					result[i].score = result[i].score as number + vote.scores[i];
 				}
 			}
 			for (let i = 0; i < result.length; i++) {
-				result[i].score /= this.poll.votes.length;
+				result[i].score = (result[i].score as number / this.poll.votes.length).toFixed(1);
 			}
 			// rank by average score
 			result.sort((a, b) => {
