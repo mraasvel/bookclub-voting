@@ -36,7 +36,6 @@ interface Model {
 	hasVoted: boolean;
 	display: "vote" | "result";
 	selectedDisplay: ViewOption | null;
-	viewOptions: ViewOption[];
 }
 
 interface VoteDTO {
@@ -47,14 +46,10 @@ interface VoteDTO {
 export default defineComponent({
 	data(): Model {
 		return {
-			poll: { id: 0, name: "", options: [], votes: [] },
+			poll: { id: 0, name: "", options: [], votes: [], closed: true },
 			hasVoted: false,
-			display: "vote",
+			display: "result",
 			selectedDisplay: null,
-			viewOptions: [
-				{ name: "vote" },
-				{ name: "result" },
-			],
 		};
 	},
 	methods: {
@@ -72,9 +67,11 @@ export default defineComponent({
 			for (const vote of poll.votes) {
 				if (vote.user === useUserStore().id) {
 					this.hasVoted = true;
-					this.display = "result";
+					return;
 				}
 			}
+			// user has not voted: show vote display
+			this.display = "vote";
 		},
 		async submit(scores: number[]) {
 			if (typeof this.$route.params.id !== 'string') {
@@ -105,6 +102,13 @@ export default defineComponent({
 	computed: {
 		showVote() {
 			return this.display === "vote";
+		},
+		viewOptions() {
+			if (!this.poll.closed) {
+				return [ { name: "vote" }, { name: "result" } ];
+			} else {
+				return [ { name: "result" } ];
+			}
 		},
 	},
 	mounted() {

@@ -35,7 +35,7 @@ export default defineComponent({
 	},
 	data(): Model {
 		return {
-			poll: { id: 0, name: "", options: [], votes: [] }
+			poll: { id: 0, name: "", options: [], votes: [], closed: false }
 		}
 	},
 	computed: {
@@ -66,7 +66,11 @@ export default defineComponent({
 				}
 			}
 			for (let i = 0; i < result.length; i++) {
-				result[i].score = (result[i].score as number / this.poll.votes.length).toFixed(1);
+				if (this.poll.votes.length === 0) {
+					result[i].score = 0;
+				} else {
+					result[i].score = (result[i].score as number / this.poll.votes.length).toFixed(1);
+				}
 			}
 			// rank by average score
 			result.sort((a, b) => {

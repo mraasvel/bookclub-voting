@@ -46,6 +46,7 @@ export class PollService {
 	}
 
 	async close(id: number) {
+		this.logger.debug(`close poll: ${id}`);
 		const response = await this.pollRepository
 			.createQueryBuilder()
 			.update(Poll)
