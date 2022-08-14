@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<VoteList label="Open Votes" :model="votes" />
+		<VoteList label="Open Votes" :model="openVotes" />
+		<VoteList label="Closed Votes" :model="closedVotes" />
 	</div>
 </template>
 
@@ -25,6 +26,14 @@ export default defineComponent({
 			const response = await callApi("/poll");
 			this.votes = await response.json();
 		},
+	},
+	computed: {
+		openVotes() {
+			return this.votes.filter((vote) => !vote.closed);
+		},
+		closedVotes() {
+			return this.votes.filter((vote) => vote.closed);
+		}
 	},
 	mounted() {
 		this.loadPolls();

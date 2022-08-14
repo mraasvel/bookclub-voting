@@ -14,4 +14,5 @@ export interface Poll {
 	name: string;
 	options: string[];
 	votes: Vote[];
+	closed: boolean;
 }
