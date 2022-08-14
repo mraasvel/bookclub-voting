@@ -9,9 +9,12 @@
 				</template>
 			</Column>
 		</DataTable>
-		<div class="submit-button">
-			<PrimeButton label="Submit Vote" :disabled="submitted" class="p-button-primary p-button-rounded" icon="pi pi-check" @click="submit" />
+		<div class="center">
+			<PrimeButton label="Submit Vote" :disabled="submitted" class="p-button-success p-button-rounded" icon="pi pi-check" @click="submit" />
 		</div>
+	</div>
+	<div v-if="!shouldShowForm" class="center">
+		<PrimeButton label="Redo Vote" @click="showForm = true" icon="pi pi-undo" class="p-button-warning p-button-rounded" />
 	</div>
 </template>
 
@@ -25,6 +28,7 @@ interface Model {
 	categories: string[];
 	scores: number[];
 	submitted: boolean;
+	showForm: boolean;
 }
 
 export default defineComponent({
@@ -35,6 +39,10 @@ export default defineComponent({
 		},
 		options: {
 			type: Object as PropType<Array<string>>,
+			required: true,
+		},
+		hasVoted: {
+			type: Boolean,
 			required: true,
 		},
 	},
@@ -48,11 +56,12 @@ export default defineComponent({
 			categories: ["hate it", "dislike it", "neutral", "like it", "love it"],
 			scores: [],
 			submitted: false,
+			showForm: false,
 		}
 	},
 	computed: {
 		isReady() {
-			return this.options.length === this.scores.length
+			return this.options.length === this.scores.length && this.shouldShowForm
 		},
 		value() {
 			return this.options.map((option, index) => {
@@ -61,6 +70,9 @@ export default defineComponent({
 					option,
 				}
 			});
+		},
+		shouldShowForm() {
+			return !this.hasVoted || this.showForm;
 		},
 	},
 	mounted() {
@@ -88,7 +100,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.submit-button {
+.center {
 	margin: auto;
 	text-align: center;
 	padding: 10px;

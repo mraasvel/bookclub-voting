@@ -6,7 +6,7 @@
 		</SplitterPanel>
 		<SplitterPanel :size="90">
 			<div v-if="showVote">
-				<VoteForm :label="poll.name" :options="poll.options" @submit="submit" />
+				<VoteForm :label="poll.name" :options="poll.options" @submit="submit" :hasVoted="hasVoted" />
 			</div>
 			<div v-else>
 				<VoteResult :vote-id="poll.id" />
