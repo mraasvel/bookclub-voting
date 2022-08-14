@@ -2,7 +2,7 @@
 <div>
 	<Splitter layout="horizontal">
 		<SplitterPanel :size="10">
-			<Listbox v-model="selectedDisplay" :options="viewOptions" optionLabel="name" />
+			<PrimeMenu :model="viewOptions" />
 		</SplitterPanel>
 		<SplitterPanel :size="90">
 			<div v-if="showVote">
@@ -25,17 +25,12 @@ import VoteResult from "../components/VoteResult.vue";
 import { useUserStore } from "@/stores/user";
 import Splitter from "primevue/splitter";
 import SplitterPanel from "primevue/splitterpanel";
-import Listbox from "primevue/listbox";
-
-interface ViewOption {
-	name: "vote" | "result";
-}
+import PrimeMenu from "primevue/menu";
 
 interface Model {
 	poll: Poll;
 	hasVoted: boolean;
 	display: "vote" | "result";
-	selectedDisplay: ViewOption | null;
 }
 
 interface VoteDTO {
@@ -49,7 +44,6 @@ export default defineComponent({
 			poll: { id: 0, name: "", options: [], votes: [], closed: true },
 			hasVoted: false,
 			display: "result",
-			selectedDisplay: null,
 		};
 	},
 	methods: {
@@ -89,14 +83,6 @@ export default defineComponent({
 			}
 			this.hasVoted = true;
 			this.display = "result";
-			this.selectedDisplay = null;
-		},
-	},
-	watch: {
-		selectedDisplay(newVal: ViewOption | null) {
-			if (newVal) {
-				this.display = newVal.name;
-			}
 		},
 	},
 	computed: {
@@ -104,17 +90,38 @@ export default defineComponent({
 			return this.display === "vote";
 		},
 		viewOptions() {
-			if (!this.poll.closed) {
-				return [ { name: "vote" }, { name: "result" } ];
+			const items = [
+				{
+					label: "View",
+					items: [
+						{
+							label: this.hasVoted ? "Vote Again" : "Vote",
+							icon: this.hasVoted ? "pi pi-undo" : "pi pi-send",
+							command: () => {
+								this.display = "vote";
+							}
+						},
+						{
+							label: "Result",
+							icon: "pi pi-book",
+							command: () => {
+								this.display = "result";
+							}
+						},
+					]
+				}
+			];
+			if (this.poll.closed) {
+				return items.filter((item) => item.label !== "vote");
 			} else {
-				return [ { name: "result" } ];
+				return items;
 			}
 		},
 	},
 	mounted() {
 		this.loadData();
 	},
-	components: { VoteForm, VoteResult, Splitter, SplitterPanel, Listbox }
+	components: { VoteForm, VoteResult, Splitter, SplitterPanel, PrimeMenu }
 });
 </script>
 
