@@ -92,7 +92,7 @@ export default defineComponent({
 		viewOptions() {
 			const items = [
 				{
-					label: "Tabs",
+					label: "View",
 					items: [
 						{
 							label: this.hasVoted ? "Vote Again" : "Vote",
