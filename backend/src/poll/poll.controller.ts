@@ -54,6 +54,12 @@ export class PollController {
 		return await this.pollService.create(pollData);
 	}
 
+	@Post('close/:id')
+	@UseGuards(RoleGuard(Role.SuperUser))
+	async closePoll(@Param('id', ParseIntPipe) id: number) {
+		return await this.pollService.close(id);
+	}
+
 	@Delete(':id')
 	@UseGuards(RoleGuard(Role.SuperUser))
 	async deletePoll(@Param('id', ParseIntPipe) id: number) {

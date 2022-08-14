@@ -1,5 +1,6 @@
 import {
 	BadRequestException,
+	ForbiddenException,
 	Injectable,
 	Logger,
 	NotFoundException,
@@ -25,11 +26,7 @@ export class PollService {
 	}
 
 	async findById(id: number) {
-		const poll = await this.pollRepository.findOneBy({ id });
-		if (!poll) {
-			throw new NotFoundException();
-		}
-		return poll;
+		return await this.findOneOrNotFound(id);
 	}
 
 	async findByIdWithUsers(id: number) {
@@ -46,6 +43,18 @@ export class PollService {
 		const entity = this.pollRepository.create(pollData);
 		this.logger.debug(`make poll: ${JSON.stringify(entity)}`);
 		return this.pollRepository.save(entity);
+	}
+
+	async close(id: number) {
+		const response = await this.pollRepository
+			.createQueryBuilder()
+			.update(Poll)
+			.set({ closed: true })
+			.where('id = :id', { id })
+			.execute();
+		if (!response.affected) {
+			throw new NotFoundException();
+		}
 	}
 
 	async delete(id: number) {
@@ -66,6 +75,9 @@ export class PollService {
 		this.logger.debug(
 			`Submit Vote: ${JSON.stringify(user)} -- ${JSON.stringify(poll)}`,
 		);
+		if (poll.closed) {
+			throw new ForbiddenException('voting is closed');
+		}
 		if (poll.options.length !== scores.length) {
 			throw new BadRequestException('invalid scores length');
 		}
@@ -78,5 +90,13 @@ export class PollService {
 			conflictPaths: ['user', 'poll'],
 			skipUpdateIfNoValuesChanged: true,
 		});
+	}
+
+	private async findOneOrNotFound(id: number) {
+		const poll = await this.pollRepository.findOneBy({ id });
+		if (!poll) {
+			throw new NotFoundException(`poll with ${id} not found`);
+		}
+		return poll;
 	}
 }

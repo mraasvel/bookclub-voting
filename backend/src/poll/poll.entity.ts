@@ -19,4 +19,7 @@ export class Poll {
 		eager: true,
 	})
 	votes: Vote[];
+
+	@Column('boolean', { default: false })
+	closed: boolean;
 }
