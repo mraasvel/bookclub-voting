@@ -1,8 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Vote } from './vote.entity';
 
-// one to many relation with votes
-
 // todo: add creator/author relation
 @Entity()
 export class Poll {

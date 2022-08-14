@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from "@/views/HomeView.vue";
-import CreatePoll from "@/components/CreatePoll.vue";
 import NotFound from "@/components/NotFound.vue";
 import VoteView from "@/views/VoteView.vue";
 import AdminView from '@/views/AdminView.vue';
@@ -20,11 +19,6 @@ const router = createRouter({
 			path: "/admin",
 			name: "admin",
 			component: AdminView,
-		},
-		{
-			path: "/poll",
-			name: "create-poll",
-			component: CreatePoll,
 		},
 		{
 			path: "/vote",

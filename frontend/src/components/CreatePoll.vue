@@ -1,8 +1,9 @@
 <template>
-	<div v-if="hasPermissions">
-		<div v-if="link">
+	<div>
+		<Toast />
 			<p>link to vote: {{ link }}</p>
-			<button @click="copyLink">Copy Link</button> 
+			<button @click="copyLink">Copy Link</button>
+		<div v-if="link">
 		</div>
 		<div v-else>
 			<h3>Poll Name </h3>
@@ -15,16 +16,12 @@
 			<button @click="submit">submit</button>
 		</div>
 	</div>
-	<div v-else>
-		<p>you don't have permission to create a poll</p>
-	</div>
 </template>
 
 <script lang="ts">
-import { useUserStore } from "@/stores/user";
 import { callApiJson } from "@/util/api";
-import { Role } from "@/util/backend.types";
 import { defineComponent } from "vue";
+import Toast from "primevue/toast";
 
 interface Text {
 	text: string;
@@ -64,10 +61,8 @@ export default defineComponent({
 			numOptions,
 		}
 	},
-	computed: {
-		hasPermissions() {
-			return useUserStore().role === Role.SuperUser;
-		},
+	components: {
+		Toast
 	},
 	methods: {
 		async submit() {
@@ -87,7 +82,11 @@ export default defineComponent({
 		},
 		copyLink() {
 			navigator.clipboard.writeText(this.link);
-			alert(`copied ${this.link} to clipboard`);
+			this.$toast.add({
+				severity: "info",
+				summary: `Copied: ${this.link}`,
+				life: 3000,
+			});
 		},
 		extraOption() {
 			this.options.push({ text: "" });
