@@ -1,27 +1,22 @@
 <template>
 	<div>
-		<Toast />
-			<p>link to vote: {{ link }}</p>
-			<button @click="copyLink">Copy Link</button>
-		<div v-if="link">
+		<h3>Poll Name </h3>
+		<InputText type="text" v-model="name" />
+		<h3>Poll Options</h3>
+		<div v-for="(option, index) in options" :key="index">
+			<InputText type="text" v-model="option.text" />
 		</div>
-		<div v-else>
-			<h3>Poll Name </h3>
-			<input type="text" v-model="name">
-			<h3>Poll Options</h3>
-			<div v-for="(option, index) in options" :key="index">
-				<input v-model="option.text">
-			</div>
-			<button @click="extraOption">add more</button>
-			<button @click="submit">submit</button>
-		</div>
+		<PrimeButton class="" @click="extraOption" label="add more" />
+		<PrimeButton class="p-button-success p-button-rounded mt-1" @click="submit" label="submit" />
 	</div>
 </template>
 
 <script lang="ts">
-import { callApiJson } from "@/util/api";
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 import Toast from "primevue/toast";
+import PrimeButton from "primevue/button";
+import InputText from "primevue/inputtext";
+import { callApiJson } from '@/util/api';
 
 interface Text {
 	text: string;
@@ -30,7 +25,6 @@ interface Text {
 interface Model {
 	name: string;
 	options: Text[];
-	link: string;
 	numOptions: number;
 }
 
@@ -52,17 +46,24 @@ function isEmpty(array: Text[]) {
 }
 
 export default defineComponent({
+	name: "RatingPoll",
+	components: {
+		Toast,
+		PrimeButton,
+		InputText,
+	},
+	emits: {
+		submit(payload: string) {
+			return payload.length > 0;
+		},
+	},
 	data(): Model {
 		const numOptions = 5;
 		return {
 			name: "",
 			options: initOptions(numOptions),
-			link: "",
 			numOptions,
-		}
-	},
-	components: {
-		Toast
+		};
 	},
 	methods: {
 		async submit() {
@@ -78,20 +79,13 @@ export default defineComponent({
 			this.options = [];
 			const { id } = await response.json();
 			const websiteUrl = import.meta.env.VITE_WEBSITE_URL;
-			this.link = `${websiteUrl}/vote/${id}`;
-		},
-		copyLink() {
-			navigator.clipboard.writeText(this.link);
-			this.$toast.add({
-				severity: "info",
-				summary: `Copied: ${this.link}`,
-				life: 3000,
-			});
+			const link = `${websiteUrl}/vote/${id}`;
+			this.$emit("submit", link);
 		},
 		extraOption() {
 			this.options.push({ text: "" });
 			this.numOptions += 1;
-		},
+		}
 	}
-});
+})
 </script>

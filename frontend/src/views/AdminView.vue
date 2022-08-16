@@ -25,7 +25,7 @@ import OwnedVoteList from "../components/OwnedVoteList.vue";
 import Splitter from "primevue/splitter";
 import SplitterPanel from "primevue/splitterpanel";
 import PrimeMenu from "primevue/menu";
-import CreatePoll from "../components/CreatePoll.vue";
+import CreatePoll from "../components/CreatePoll/CreatePoll.vue";
 
 interface Model {
 	display: "createPoll" | "polls";
