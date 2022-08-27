@@ -1,7 +1,7 @@
 <template>
 	<Card class="LoginCard center">
 		<template #header>
-			<img alt="login header" src="@/assets/images/LoginHeader.png"/>
+			<img alt="login header" src="@/assets/images/mraasvel-with-the-coding-bible.png" style="width: 42vw;"/>
 		</template>
 		<template #title>
 			Codam Book Club
