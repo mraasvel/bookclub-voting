@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<h3>Poll Name </h3>
-		<InputText type="text" v-model="name" />
-		<h3>Poll Options</h3>
+		<h3>Name</h3>
+		<InputText type="text" class="full-width" v-model="name" />
+		<h3>Options</h3>
 		<div v-for="(option, index) in options" :key="index">
-			<InputText type="text" v-model="option.text" />
+			<InputText type="text" class="full-width" v-model="option.text" />
 		</div>
-		<PrimeButton class="" @click="extraOption" label="add more" />
-		<PrimeButton class="p-button-success p-button-rounded mt-1" @click="submit" label="submit" />
+		<!-- <PrimeButton class="" @click="extraOption" label="add more" /> -->
+		<PrimeButton class="p-button-success block mt-3 p-button-outlined p-button-raised mt-1 full-width" @click="submit" label="submit" />
 	</div>
 </template>
 
@@ -86,6 +86,15 @@ export default defineComponent({
 			this.options.push({ text: "" });
 			this.numOptions += 1;
 		}
-	}
+	},
+	mounted() {
+		
+	},
 })
 </script>
+
+<style scoped>
+.full-width {
+	width: 17vw
+}
+</style>

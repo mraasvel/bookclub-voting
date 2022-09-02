@@ -1,6 +1,5 @@
 # todo
 
-- endpoint for 'closing' a vote -- votes should have two states: open/closed (people cannot vote if closed, READONLY)
 - admin functionality: superuser can make other users admins
 - admins can: make votes, close/delete their own votes (maybe reopen option?)
 - superuser: can (un)admin people and close/delete all votes

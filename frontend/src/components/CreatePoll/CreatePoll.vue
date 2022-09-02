@@ -52,7 +52,7 @@ export default defineComponent({
 
 <style scoped>
 .box {
-	width: 400px
+	width: 500px
 }
 
 .center {
