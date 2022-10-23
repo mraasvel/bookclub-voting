@@ -17,8 +17,9 @@ export class Form {
 
 	@OneToMany(() => FormQuestion, (formQuestion: FormQuestion) => formQuestion.form, {
 		eager: true,
+		cascade: true,
 	})
-	formEntries: FormQuestion[];
+	formQuestions: FormQuestion[];
 
 	@Column('boolean', { default: false })
 	closed: boolean;

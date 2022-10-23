@@ -33,5 +33,5 @@ export class User {
 	votes: Vote[];
 
 	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.user)
-	formSubmissions: FormAnswer[];
+	formAnswers: FormAnswer[];
 }

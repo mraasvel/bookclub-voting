@@ -1,22 +1,30 @@
 import { IsInt, IsNumber, IsOptional, IsString, Max, Min, registerDecorator, Validate, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { ValidateWith } from 'src/validator/validate_with';
-import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { FormQuestion } from '../form_question.entity';
 
 @Entity()
 export class LinearScale {
 	@PrimaryColumn()
-	@OneToOne(() => FormQuestion, (form: FormQuestion) => form.linearScale)
-	formQuestion: number;
+	formQuestionId: number;
+
+	@OneToOne(() => FormQuestion, (form: FormQuestion) => form.linearScale, {
+		onDelete: "CASCADE"
+	})
+	@JoinColumn()
+	formQuestion: FormQuestion;
 
 	@Column({ type: "text" })
 	title: string;
 
 	@Column({ type: "text", nullable: true })
-	description: string;
+	description?: string;
 
-	@Column({ type: "int4range"})
-	scoringRange: string;
+	@Column({ type: "int"})
+	rangeStart: number;
+
+	@Column({ type: "int" })
+	rangeEnd: number;
 }
 
 export class LinearScaleDTO {
@@ -25,7 +33,7 @@ export class LinearScaleDTO {
 
 	@IsString()
 	@IsOptional()
-	description: string;
+	description?: string;
 
 	// [0, 10]
 

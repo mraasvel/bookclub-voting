@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Form } from './form.entity';
 import FormQuestionType, { FormQuestionTypeString } from './form_question_type.enum';
 import { LinearScale, LinearScaleDTO } from './linear_scale/linear_scale.entity';
@@ -11,14 +11,14 @@ export class FormQuestion {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@ManyToOne(() => Form, (form: Form) => form.formEntries, {
+	@ManyToOne(() => Form, (form: Form) => form.formQuestions, {
 		onDelete: "CASCADE",
 		eager: false,
 	})
 	form: Form;
 
 	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.formQuestion)
-	formSubmissions: FormAnswer[];
+	formAnswers: FormAnswer[];
 
 	// enum represents which variant this entry is.
 	@Column({
@@ -33,6 +33,7 @@ export class FormQuestion {
 	@OneToOne(() => LinearScale, (linearScale: LinearScale) => linearScale.formQuestion, {
 		eager: true,
 		nullable: true,
+		cascade: true,
 	})
 	linearScale: LinearScale;
 }
@@ -45,5 +46,5 @@ export class FormQuestionDTO {
 	@IsObject()
 	@ValidateNested()
 	@Type(() => LinearScaleDTO)
-	linearScale: LinearScaleDTO;
+	linearScale?: LinearScaleDTO;
 }
