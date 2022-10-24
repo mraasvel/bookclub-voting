@@ -16,3 +16,27 @@ export interface Poll {
 	votes: Vote[];
 	closed: boolean;
 }
+
+export enum FormQuestionType {
+	LinearScale = 'LinearScale',
+}
+
+export interface LinearScale {
+	title: string;
+	description?: string;
+	rangeStart: number;
+	rangeEnd: number;
+}
+
+export interface FormQuestion {
+	id: number;
+	formQuestionType: FormQuestionType;
+	linearScale?: LinearScale;
+}
+
+export interface Form {
+	id: number;
+	name: string;
+	formQuestions: FormQuestion[];
+	closed: boolean;
+}

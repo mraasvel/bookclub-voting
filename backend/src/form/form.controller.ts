@@ -14,10 +14,21 @@ import { FormAnswerDTO } from "./form_answer.entity";
 export class FormController {
 	constructor(private readonly formService: FormService) {}
 
+	@Get()
+	async getForms() {
+		return await this.formService.getForms();
+	}
+
 	@Post()
 	@UseGuards(RoleGuard(Role.SuperUser))
 	async createForm(@Req() req: RequestWithUser, @Body() formData: FormDTO) {
 		return await this.formService.createForm(req.user, formData);
+	}
+
+	@Post('close/:id')
+	@UseGuards(RoleGuard(Role.SuperUser))
+	async closeForm(@Param('id', ParseIntPipe) id: number) {
+		return await this.formService.closeForm(id);
 	}
 
 	@Get(':id')

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/user.entity";
 import { Repository } from "typeorm";
@@ -27,6 +27,16 @@ export class FormService {
 		await this.formRepository.save(form);
 	}
 
+	async closeForm(formId: number) {
+		let form = await this.getFormById(formId);
+		this.logger.log(`Form closed: ${form.name} ${form.id}`);
+		await this.formRepository.update(formId, { closed: true });
+	}
+
+	async getForms() {
+		return await this.formRepository.find();
+	}
+
 	async getFormById(id: number) {
 		let form = await this.formRepository.findOneBy({ id });
 		if (!form) {
@@ -36,7 +46,14 @@ export class FormService {
 	}
 
 	async submitAnswer(user: User, questionId: number, answerData: FormAnswerDTO) {
-		let question = await this.formQuestionRepository.findOneBy({ id: questionId });
+		let question = await this.formQuestionRepository.createQueryBuilder('question')
+			.where('question.id = :id', { id: questionId })
+			.innerJoinAndSelect('question.form', 'form')
+			.innerJoinAndSelect('question.linearScale', 'linearScale')
+			.getOneOrFail();
+		if (question.form.closed) {
+			throw new ForbiddenException("form is closed");
+		}
 		this.assertFormTypeProperty(question.formQuestionType, answerData);
 		let answer = this.answerFromDTO(user.id, question, answerData);
 		await this.formAnswerRepository.save(answer);
