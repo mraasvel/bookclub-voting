@@ -61,4 +61,9 @@ export class FormController {
 	async getSubmitStatus(@Req() req: RequestWithUser, @Param('formId', ParseIntPipe) formId: number) {
 		return await this.formService.getSubmitStatus(req.user, formId);
 	}
+
+	@Get('result/:id')
+	async getFormResult(@Param('id', ParseIntPipe) formId: number) {
+		return await this.formService.getFormResult(formId);
+	}
 }

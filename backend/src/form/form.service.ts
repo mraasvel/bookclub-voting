@@ -102,6 +102,17 @@ export class FormService {
 		return { status };
 	}
 
+	async getFormResult(formId: number) {
+		let form = await this.formRepository.createQueryBuilder('form')
+			.innerJoinAndSelect('form.formQuestions', 'formQuestions')
+			.innerJoinAndSelect('formQuestions.formAnswers', 'formAnswers')
+			.innerJoinAndSelect('formQuestions.linearScale', 'linearScale')
+			.innerJoinAndSelect('formAnswers.linearScaleAnswer', 'linearScaleAnswer')
+			.where('form.id = :formId', { formId })
+			.getOneOrFail();
+		return form.formQuestions;
+	}
+
 /* Private */
 
 	private formFromDTO(owner: User, formData: FormDTO) {

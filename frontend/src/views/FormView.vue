@@ -1,5 +1,5 @@
 <template>
-	<Splitter layout="horizontal">
+	<Splitter v-if="form !== null" layout="horizontal">
 		<SplitterPanel :size="10">
 			<PrimeMenu :model="viewOptions" />
 		</SplitterPanel>
@@ -27,7 +27,7 @@ interface SubmitStatusResponse {
 }
 
 interface Model {
-	form: Form;
+	form: Form | null;
 	currentDisplay: Display;
 	hasVoted: boolean;
 }
@@ -37,14 +37,14 @@ export default defineComponent({
 	components: { FormQuestions, FormResult, Splitter, SplitterPanel, PrimeMenu },
     data(): Model {
         return {
-            form: { id: 0, name: "", formQuestions: [], closed: true },
+            form: null,
             currentDisplay: "result",
 			hasVoted: false,
         };
     },
     computed: {
         canFillForm() {
-            return !this.form.closed;
+            return this.form && !this.form.closed;
         },
         showQuestions() {
             return this.currentDisplay === "question";
@@ -56,7 +56,7 @@ export default defineComponent({
 					items: [] as any[]
 				}
 			];
-			if (!this.form.closed) {
+			if (this.form && !this.form.closed) {
 				views[0].items.push({
 					label: this.hasVoted ? "Update Vote" : "Vote",
 					icon: this.hasVoted ? "pi pi-undo" : "pi pi-send",
@@ -88,11 +88,11 @@ export default defineComponent({
             this.form = await response.json();
         },
 		async determineInitialDisplay() {
-			const id = this.form.id;
+			const id = this.form!.id;
 			const response = await callApi(`/form/submit-status/${id}`);
 			const submitStatus: SubmitStatusResponse = await response.json();
 			this.hasVoted = submitStatus.status === "submitted";
-			if (this.hasVoted || this.form.closed) {
+			if (this.hasVoted || this.form!.closed) {
 				this.currentDisplay = "result";
 			} else {
 				this.currentDisplay = "question";

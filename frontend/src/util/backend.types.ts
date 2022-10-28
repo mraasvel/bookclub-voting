@@ -50,3 +50,18 @@ export interface FormAnswerDTO {
 	type: FormQuestionType;
 	linearScaleAnswer?: LinearScaleAnswerDTO;
 }
+
+export interface LinearScaleAnswer {
+	score: number;
+}
+
+export interface FormAnswer {
+	formAnswerType: FormQuestionType,
+	linearScaleAnswer?: LinearScaleAnswer,
+}
+
+export interface FormQuestionWithAnswer extends FormQuestion {
+	formAnswers: FormAnswer[];
+}
+
+export type FormResult = FormQuestionWithAnswer[];
