@@ -3,11 +3,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/user.entity";
 import { Repository } from "typeorm";
 import { Form, FormDTO } from "./form.entity";
-import { FormAnswer, FormAnswerDTO } from "./form_answer.entity";
+import { FormAnswer, FormAnswerDTO, FormSubmitDTO } from "./form_answer.entity";
 import { FormQuestion, FormQuestionDTO } from "./form_question.entity";
 import FormQuestionType from "./form_question_type.enum";
 import { LinearScale, LinearScaleDTO } from "./linear_scale/linear_scale.entity";
 import { LinearScaleAnswer, LinearScaleAnswerDTO } from "./linear_scale/linear_scale_answer.entity";
+
+export type SubmitStatus = "submitted" | "notSubmitted";
 
 @Injectable()
 export class FormService {
@@ -45,14 +47,17 @@ export class FormService {
 		return form;
 	}
 
-	async submitAnswer(user: User, questionId: number, answerData: FormAnswerDTO) {
+	async submitAnswer(user: User, answerData: FormAnswerDTO, formId?: number) {
 		let question = await this.formQuestionRepository.createQueryBuilder('question')
-			.where('question.id = :id', { id: questionId })
+			.where('question.id = :id', { id: answerData.questionId })
 			.innerJoinAndSelect('question.form', 'form')
 			.innerJoinAndSelect('question.linearScale', 'linearScale')
 			.getOneOrFail();
 		if (question.form.closed) {
 			throw new ForbiddenException("form is closed");
+		}
+		if (formId && question.form.id !== formId) {
+			throw new BadRequestException(`invalid answer for given formId: expected: ${question.form.id}, received: ${formId}`);
 		}
 		this.assertFormTypeProperty(question.formQuestionType, answerData);
 		let answer = this.answerFromDTO(user.id, question, answerData);
@@ -70,6 +75,30 @@ export class FormService {
 		}
 		let form = await qb.getOneOrFail();
 		return form.formQuestions.flatMap((question) => question.formAnswers);
+	}
+
+	async submitForm(user: User, formId: number, formSubmitData: FormSubmitDTO) {
+		for (let answer of formSubmitData.answers) {
+			await this.submitAnswer(user, answer, formId);
+		}
+		let form = await this.formRepository.findOneOrFail({
+			where: { id: formId },
+			relations: ['participants']
+		});
+		if (form.participants.find((x) => x.id === user.id)) {
+			return;
+		}
+		form.participants.push(user);
+		await this.formRepository.save(form);
+	}
+
+	async getSubmitStatus(user: User, formId: number): Promise<SubmitStatus> {
+		let form = await this.formRepository.createQueryBuilder('form')
+			.innerJoinAndSelect('form.participants', 'participants')
+			.where('form.id = :formId', { formId })
+			.andWhere('participants.id = :id', { id: user.id })
+			.getOne();
+		return !form ? "notSubmitted" : "submitted";
 	}
 
 /* Private */

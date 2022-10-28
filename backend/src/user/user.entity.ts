@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import Role from './role.enum';
 import { Vote } from 'src/poll/vote.entity';
@@ -34,4 +34,12 @@ export class User {
 
 	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.user)
 	formAnswers: FormAnswer[];
+
+	@ManyToMany(() => Form, (form: Form) => form.participants)
+	@JoinTable({
+		name: 'user_form_submissions',
+		joinColumn: { name: 'userId' },
+		inverseJoinColumn: { name: 'formId' },
+	})
+	submittedForms: Form[];
 }

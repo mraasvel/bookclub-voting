@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsObject, IsString, ValidateNested } from 'class-validator';
 import { User } from 'src/user/user.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { FormQuestion, FormQuestionDTO } from './form_question.entity';
 
 @Entity()
@@ -23,6 +23,9 @@ export class Form {
 
 	@Column('boolean', { default: false })
 	closed: boolean;
+
+	@ManyToMany(() => User, (user) => user.submittedForms)
+	participants: User[];
 }
 
 // Owner comes from session

@@ -40,3 +40,13 @@ export interface Form {
 	formQuestions: FormQuestion[];
 	closed: boolean;
 }
+
+export interface LinearScaleAnswerDTO {
+	score: number;
+}
+
+export interface FormAnswerDTO {
+	questionId: number;	
+	type: FormQuestionType;
+	linearScaleAnswer?: LinearScaleAnswerDTO;
+}

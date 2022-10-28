@@ -6,7 +6,7 @@ import RoleGuard from "src/guards/role.guard";
 import Role from "src/user/role.enum";
 import { FormDTO } from "./form.entity";
 import { FormService } from "./form.service";
-import { FormAnswerDTO } from "./form_answer.entity";
+import { FormAnswerDTO, FormSubmitDTO } from "./form_answer.entity";
 
 @Controller('form')
 @ApiTags('Form')
@@ -37,14 +37,14 @@ export class FormController {
 	}
 
 	// upsert
-	@Post('submit-answer/:questionId')
-	async submitAnswer(@Req() req: RequestWithUser, @Param('questionId', ParseIntPipe) questionId: number, @Body() formAnswerData: FormAnswerDTO) {
-		return await this.formService.submitAnswer(req.user, questionId, formAnswerData);
+	@Post('submit-answer')
+	async submitAnswer(@Req() req: RequestWithUser, @Body() formAnswerData: FormAnswerDTO) {
+		return await this.formService.submitAnswer(req.user, formAnswerData);
 	}
 
-	@Post('submit/:id')
-	async submitForm(@Req() req: RequestWithUser, @Param('id', ParseIntPipe) id: number) {
-
+	@Post('submit-form/:formId')
+	async submitForm(@Req() req: RequestWithUser, @Param('formId', ParseIntPipe) formId: number, @Body() formSubmitData: FormSubmitDTO) {
+		return await this.formService.submitForm(req.user, formId, formSubmitData);
 	}
 
 	@Get('answers/:id')
@@ -55,5 +55,10 @@ export class FormController {
 	@Get('own-answers/:id')
 	async getOwnFormAnswers(@Req() req: RequestWithUser, @Param('id', ParseIntPipe) formId: number) {
 		return await this.formService.getFormAnswers(formId, req.user.id);
+	}
+
+	@Get('submit-status/:formId')
+	async getSubmitStatus(@Req() req: RequestWithUser, @Param('formId', ParseIntPipe) formId: number) {
+		return await this.formService.getSubmitStatus(req.user, formId);
 	}
 }
