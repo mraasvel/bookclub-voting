@@ -21,6 +21,10 @@ import { defineComponent } from 'vue';
 import PrimeMenu from "primevue/menu";
 
 type Display = "result" | "question";
+type SubmitStatus = "submitted" | "notSubmitted";
+interface SubmitStatusResponse {
+	status: SubmitStatus,
+}
 
 interface Model {
 	form: Form;
@@ -54,7 +58,7 @@ export default defineComponent({
 			];
 			if (!this.form.closed) {
 				views[0].items.push({
-					label: this.hasVoted ? "Vote Again" : "Vote",
+					label: this.hasVoted ? "Update Vote" : "Vote",
 					icon: this.hasVoted ? "pi pi-undo" : "pi pi-send",
 					command: () => {
 						this.currentDisplay = "question";
@@ -82,13 +86,25 @@ export default defineComponent({
             }
             const response = await callApi(`/form/${id}`);
             this.form = await response.json();
-            // FIXME: check if user has already voted on this form, in which case the default view should be "result"
-            if (!this.form.closed) {
-                this.currentDisplay = "question";
-            }
         },
-		refresh() {
-			this.loadForm();
+		async determineInitialDisplay() {
+			const id = this.form.id;
+			const response = await callApi(`/form/submit-status/${id}`);
+			const submitStatus: SubmitStatusResponse = await response.json();
+			this.hasVoted = submitStatus.status === "submitted";
+			if (this.hasVoted || this.form.closed) {
+				this.currentDisplay = "result";
+			} else {
+				this.currentDisplay = "question";
+			}
+		},
+		async refresh() {
+			try {
+				await this.loadForm();
+				await this.determineInitialDisplay();
+			} catch (error: any) {
+				console.error(error);
+			}
 		}
     },
     mounted() {

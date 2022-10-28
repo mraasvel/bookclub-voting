@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import type { LinearScale } from '@/util/backend.types';
+import type { LinearScale, LinearScaleAnswerDTO } from '@/util/backend.types';
 import Card from 'primevue/card';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
@@ -39,6 +39,11 @@ export default defineComponent({
             required: true,
         }
     },
+	emits: {
+		change(_: LinearScaleAnswerDTO) {
+			return true;
+		}
+	},
 	data() {
 		let scores = []
 		for (let i = this.linearScale.rangeStart; i <= this.linearScale.rangeEnd; i++) {
@@ -61,8 +66,10 @@ export default defineComponent({
 		}
 	},
 	watch: {
-		score(newVal, oldVal) {
-			console.log(newVal, oldVal);
+		score(newVal: number) {
+			this.$emit("change", {
+				score: newVal,
+			});
 		}
 	},
 	methods: {

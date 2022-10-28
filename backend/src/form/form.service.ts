@@ -92,13 +92,14 @@ export class FormService {
 		await this.formRepository.save(form);
 	}
 
-	async getSubmitStatus(user: User, formId: number): Promise<SubmitStatus> {
+	async getSubmitStatus(user: User, formId: number) {
 		let form = await this.formRepository.createQueryBuilder('form')
 			.innerJoinAndSelect('form.participants', 'participants')
 			.where('form.id = :formId', { formId })
 			.andWhere('participants.id = :id', { id: user.id })
 			.getOne();
-		return !form ? "notSubmitted" : "submitted";
+		const status = !form ? "notSubmitted" : "submitted";
+		return { status };
 	}
 
 /* Private */
