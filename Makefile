@@ -3,16 +3,16 @@ BACKEND := bookclub-voting-backend
 FRONTEND := bookclub-voting-frontend
 
 up:
-	docker-compose up --build
+	docker compose up --build
 
 build:
-	docker-compose build
+	docker compose build
 
 clean:
-	docker-compose down
+	docker compose down
 
 fclean:
-	docker-compose down
+	docker compose down
 	docker volume prune -y
 
 exec_db:
