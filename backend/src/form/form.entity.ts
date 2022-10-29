@@ -18,13 +18,17 @@ export class Form {
 	@OneToMany(() => FormQuestion, (formQuestion: FormQuestion) => formQuestion.form, {
 		eager: true,
 		cascade: true,
+		nullable: true,
 	})
 	formQuestions: FormQuestion[];
 
 	@Column('boolean', { default: false })
 	closed: boolean;
 
-	@ManyToMany(() => User, (user) => user.submittedForms)
+	@ManyToMany(() => User, (user) => user.submittedForms, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
 	participants: User[];
 }
 

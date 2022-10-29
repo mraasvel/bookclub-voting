@@ -3,6 +3,7 @@
 		<Column field="rank" header="Rank" :sortable="true" ></Column>
 		<Column field="name" header="Name" :sortable="true" ></Column>
 		<Column field="score" header="Average Score" :sortable="true" ></Column>
+		<Column field="answerCount" header="# Votes" :sortable="true" ></Column>
 	</DataTable>
 </template>
 
@@ -16,6 +17,7 @@ interface Row {
 	rank: number;
 	name: string;
 	score: number | string;
+    answerCount: number;
 }
 
 export default defineComponent({
@@ -33,6 +35,7 @@ export default defineComponent({
                     rank: 0,
                     name: question.linearScale!.title,
                     score: this.averageScore(question.formAnswers).toFixed(1),
+                    answerCount: question.formAnswers.length,
                 };
             });
             // rank by average score

@@ -1,10 +1,10 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, NotImplementedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/user.entity";
 import { Repository } from "typeorm";
 import { Form, FormDTO } from "./form.entity";
 import { FormAnswer, FormAnswerDTO, FormSubmitDTO } from "./form_answer.entity";
-import { FormQuestion, FormQuestionDTO } from "./form_question.entity";
+import { FormQuestion, FormQuestionDTO, FormQuestionPartialDTO } from "./form_question.entity";
 import FormQuestionType from "./form_question_type.enum";
 import { LinearScale, LinearScaleDTO } from "./linear_scale/linear_scale.entity";
 import { LinearScaleAnswer, LinearScaleAnswerDTO } from "./linear_scale/linear_scale_answer.entity";
@@ -48,11 +48,10 @@ export class FormService {
 	}
 
 	async submitAnswer(user: User, answerData: FormAnswerDTO, formId?: number) {
-		let question = await this.formQuestionRepository.createQueryBuilder('question')
-			.where('question.id = :id', { id: answerData.questionId })
-			.innerJoinAndSelect('question.form', 'form')
-			.innerJoinAndSelect('question.linearScale', 'linearScale')
-			.getOneOrFail();
+		let question = await this.formQuestionRepository.findOneOrFail({
+			where: { id: answerData.questionId },
+			relations: ["form"],
+		});
 		if (question.form.closed) {
 			throw new ForbiddenException("form is closed");
 		}
@@ -65,15 +64,18 @@ export class FormService {
 	}
 
 	async getFormAnswers(formId: number, userId?: number) {
-		let qb = this.formRepository.createQueryBuilder('form')
-			.innerJoinAndSelect('form.formQuestions', 'formQuestions')
-			.innerJoinAndSelect('formQuestions.formAnswers', 'formAnswers')
-			.innerJoinAndSelect('formAnswers.linearScaleAnswer', 'linearScaleAnswer')
-			.where('form.id = :formId', { formId });
-		if (userId) {
-			qb.andWhere('formAnswers.userId = :userId', { userId });
+		let form = await this.formRepository.findOneOrFail({
+			where: { id: formId },
+			relations: ['formQuestions'],
+		});
+		for (let question of form.formQuestions) {
+			question.formAnswers = await this.formAnswerRepository.find({
+				where: {
+					formQuestionId: question.id,
+					userId,
+				},
+			});
 		}
-		let form = await qb.getOneOrFail();
 		return form.formQuestions.flatMap((question) => question.formAnswers);
 	}
 
@@ -103,14 +105,49 @@ export class FormService {
 	}
 
 	async getFormResult(formId: number) {
-		let form = await this.formRepository.createQueryBuilder('form')
-			.innerJoinAndSelect('form.formQuestions', 'formQuestions')
-			.innerJoinAndSelect('formQuestions.formAnswers', 'formAnswers')
-			.innerJoinAndSelect('formQuestions.linearScale', 'linearScale')
-			.innerJoinAndSelect('formAnswers.linearScaleAnswer', 'linearScaleAnswer')
-			.where('form.id = :formId', { formId })
-			.getOneOrFail();
+		let form = await this.formRepository.findOneOrFail({
+			where: { id: formId },
+			relations: ['formQuestions']
+		});
+		for (let question of form.formQuestions) {
+			question.formAnswers = await this.formAnswerRepository.find({
+				where: { formQuestionId: question.id },
+				relations: ['linearScaleAnswer']
+			});
+		}
 		return form.formQuestions;
+	}
+
+	async deleteForm(formId: number) {
+		const form = await this.formRepository.delete(formId);
+		if (!form) {
+			throw new NotFoundException();
+		}
+		return form;
+	}
+
+	async addQuestion(formId: number, questionData: FormQuestionDTO) {
+		let form = await this.getFormById(formId);
+		let question = this.questionFromDTO(questionData);
+		form.formQuestions.push(question);
+		return await this.formRepository.save(form);
+	}
+
+	async updateQuestion(questionId: number, partialQuestion: FormQuestionPartialDTO) {
+		let question = await this.formQuestionRepository.findOneByOrFail({ id: questionId });
+		if (question.formQuestionType !== partialQuestion.type) {
+			throw new NotImplementedException("cannot change the type of a question");
+		}
+		switch (partialQuestion.type) {
+			case FormQuestionType.LinearScale:
+				question.linearScale.updateFromPartial(partialQuestion.linearScale);
+				break;
+		}
+		return await this.formQuestionRepository.save(question);
+	}
+
+	async getQuestion(id: number) {
+		return await this.formQuestionRepository.findOneByOrFail({ id });
 	}
 
 /* Private */

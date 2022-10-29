@@ -32,10 +32,15 @@ export class User {
 	@OneToMany(() => Vote, (vote: Vote) => vote.user)
 	votes: Vote[];
 
-	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.user)
+	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.user, {
+		nullable: true,
+	})
 	formAnswers: FormAnswer[];
 
-	@ManyToMany(() => Form, (form: Form) => form.participants)
+	@ManyToMany(() => Form, (form: Form) => form.participants, {
+		onDelete: "CASCADE",
+		nullable: true,
+	})
 	@JoinTable({
 		name: 'user_form_submissions',
 		joinColumn: { name: 'userId' },

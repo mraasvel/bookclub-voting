@@ -25,6 +25,19 @@ export class LinearScale {
 
 	@Column({ type: "int" })
 	rangeEnd: number;
+
+	private doUpdate(key: string, partial: LinearScalePartialDTO) {
+		if (partial[key]) {
+			this[key] = partial[key]
+		}
+	}
+
+	updateFromPartial(partial: LinearScalePartialDTO) {
+		this.doUpdate('description', partial);
+		this.doUpdate('title', partial);
+		this.doUpdate('rangeStart', partial);
+		this.doUpdate('rangeEnd', partial);
+	}
 }
 
 export class LinearScaleDTO {
@@ -49,4 +62,31 @@ export class LinearScaleDTO {
 	@Min(0)
 	@Max(10)
 	rangeEnd: number;
+}
+
+export class LinearScalePartialDTO {
+	@IsString()
+	@IsOptional()
+	title?: string;
+
+	@IsString()
+	@IsOptional()
+	description?: string;
+
+	// [0, 10]
+
+	@IsInt()
+	@Min(0)
+	@Max(10)
+	@ValidateWith((object) => object.rangeStart <= object.rangeEnd, {
+		message: "rangeStart needs to be less than or equal to rangeEnd"
+	})
+	@IsOptional()
+	rangeStart?: number;
+
+	@IsNumber()
+	@Min(0)
+	@Max(10)
+	@IsOptional()
+	rangeEnd?: number;
 }

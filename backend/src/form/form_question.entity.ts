@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Form } from './form.entity';
 import FormQuestionType, { FormQuestionTypeString } from './form_question_type.enum';
-import { LinearScale, LinearScaleDTO } from './linear_scale/linear_scale.entity';
+import { LinearScale, LinearScaleDTO, LinearScalePartialDTO } from './linear_scale/linear_scale.entity';
 import { FormAnswer } from './form_answer.entity';
 import { IsEnum, IsNotEmpty, IsObject, IsString, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -17,7 +17,9 @@ export class FormQuestion {
 	})
 	form: Form;
 
-	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.formQuestion)
+	@OneToMany(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.formQuestion, {
+		nullable: true,
+	})
 	formAnswers: FormAnswer[];
 
 	// enum represents which variant this entry is.
@@ -47,4 +49,15 @@ export class FormQuestionDTO {
 	@ValidateNested()
 	@Type(() => LinearScaleDTO)
 	linearScale?: LinearScaleDTO;
+}
+
+export class FormQuestionPartialDTO {
+	@IsEnum(FormQuestionType, { message: () => `must be one of: ${FormQuestionTypeString()}` })
+	type: FormQuestionType;
+
+	@ValidateIf((dto) => dto.type === FormQuestionType.LinearScale)
+	@IsObject()
+	@ValidateNested()
+	@Type(() => LinearScalePartialDTO)
+	linearScale?: LinearScalePartialDTO;
 }
