@@ -1,5 +1,5 @@
 <template>
-	<LinearScaleQuestion v-if="isLinearScale" :linear-scale="question.linearScale!" @change="changeLinearScale" />
+	<LinearScaleQuestion v-if="isLinearScale" :question-id="question.id" :linear-scale="question.linearScale!" @change="changeLinearScale" />
 </template>
 
 <script lang="ts">

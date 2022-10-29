@@ -30,11 +30,25 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import { defineComponent, type PropType } from 'vue';
 import { marked } from "marked";
+import { makeQuestionKey, persistItem, getPersistentItem } from "@/util/storage";
+
+interface SessionData {
+	score: number;
+}
+
+interface Model {
+	scores: number[],
+	score: number | null,
+}
 
 export default defineComponent({
     name: "LinearScaleQuestion",
 	components: { Card, DataTable, Column },
     props: {
+		questionId: {
+			type: Number,
+			required: true,
+		},
         linearScale: {
             type: Object as PropType<LinearScale>,
             required: true,
@@ -45,7 +59,7 @@ export default defineComponent({
 			return true;
 		}
 	},
-	data() {
+	data(): Model {
 		let scores = []
 		for (let i = this.linearScale.rangeStart; i <= this.linearScale.rangeEnd; i++) {
 			scores.push(i);
@@ -67,10 +81,14 @@ export default defineComponent({
 		},
 		markdownDescription() {
 			return marked(this.linearScale.description);
+		},
+		sessionKey() {
+			return makeQuestionKey(this.questionId);
 		}
 	},
 	watch: {
 		score(newVal: number) {
+			this.persistValue(newVal);
 			this.$emit("change", {
 				score: newVal,
 			});
@@ -80,6 +98,23 @@ export default defineComponent({
 		inputName(index: number) {
 			return `input_${index}`;
 		},
+		persistValue(n: number) {
+			const value = JSON.stringify({
+				score: n,
+			});
+			persistItem(this.sessionKey, value);
+		},
+		loadValue() {
+			const item = getPersistentItem(this.sessionKey);
+			if (!item) {
+				return;
+			}
+			const sessionData: SessionData = JSON.parse(item);
+			this.score = sessionData.score;
+		}
 	},
+	mounted() {
+		this.loadValue();
+	}
 });
 </script>
