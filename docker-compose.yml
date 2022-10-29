@@ -2,7 +2,7 @@
 
 version: "3"
 services:
-  backend:
+  bookclub-voting-backend:
     container_name: bookclub-voting-backend
     build:
       context: ./backend
@@ -17,9 +17,9 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgres
+      - bookclub-voting-postgres
 
-  frontend:
+  bookclub-voting-frontend:
     container_name: bookclub-voting-frontend
     build:
       context: ./frontend
@@ -33,11 +33,11 @@ services:
     ports:
       - "8080:8080"
     links:
-      - backend
+      - bookclub-voting-backend
 
-  postgres:
+  bookclub-voting-postgres:
     container_name: postgres
-    image: postgres:13
+    image: postgres:13-alpine
     env_file:
       - .env
     ports:
