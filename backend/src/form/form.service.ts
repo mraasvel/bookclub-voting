@@ -130,14 +130,14 @@ export class FormService {
 	}
 
 	async addQuestion(formId: number, questionData: FormQuestionDTO) {
-		let form = await this.getFormById(formId);
+		let form = await this.assertFormIsOpen(formId);
 		let question = this.questionFromDTO(questionData);
 		form.formQuestions.push(question);
 		return await this.formRepository.save(form);
 	}
 
 	async updateQuestion(questionId: number, partialQuestion: FormQuestionPartialDTO) {
-		let question = await this.formQuestionRepository.findOneByOrFail({ id: questionId });
+		let question = await this.assertFormIsOpenByQuestionId(questionId);
 		if (question.formQuestionType !== partialQuestion.type) {
 			throw new NotImplementedException("cannot change the type of a question");
 		}
@@ -214,6 +214,14 @@ export class FormService {
 				}
 				break;
 		}
+	}
+
+	private async assertFormIsOpen(formId: number) {
+		const form = await this.getFormById(formId);
+		if (form.closed) {
+			throw new ForbiddenException("form is closed");
+		}
+		return form;
 	}
 
 	private async assertFormIsOpenByQuestionId(questionId: number) {

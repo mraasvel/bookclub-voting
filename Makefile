@@ -1,5 +1,6 @@
 DB := postgres
 BACKEND := bookclub-voting-backend
+FRONTEND := bookclub-voting-frontend
 
 up:
 	docker-compose up --build
@@ -19,3 +20,6 @@ exec_db:
 
 exec_be:
 	docker exec -it $(BACKEND) bash
+
+exec_fe:
+	docker exec -it $(FRONTEND) bash

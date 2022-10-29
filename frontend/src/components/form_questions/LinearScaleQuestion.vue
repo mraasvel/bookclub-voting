@@ -4,14 +4,14 @@
 			{{ linearScale.title }}
 		</template>
 		<template #subtitle>
-			{{ linearScale.description }}
+			<div v-html="markdownDescription"></div>
 		</template>
 		<template #content>
 			<DataTable :value="value" dataKey="id">
 				<Column field="labelOne" header=""></Column>
 
 				<Column v-for="index in scores" :key="index" :header="index.toString()">
-					<template #body="slotProps">
+					<template #body>
 						<input type="radio" :value="index" v-model="score">
 					</template>
 				</Column>
@@ -29,6 +29,7 @@ import Card from 'primevue/card';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import { defineComponent, type PropType } from 'vue';
+import { marked } from "marked";
 
 export default defineComponent({
     name: "LinearScaleQuestion",
@@ -63,6 +64,9 @@ export default defineComponent({
 					labelTwo: "love it",
 				}
 			];
+		},
+		markdownDescription() {
+			return marked(this.linearScale.description);
 		}
 	},
 	watch: {
