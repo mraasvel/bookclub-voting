@@ -16,7 +16,7 @@ export default defineConfig({
 		port: 8080,
 		proxy: {
 			"/api": {
-				target: "http://backend:3000/",
+				target: "http://bookclub-voting-backend:3000/",
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
 		},
