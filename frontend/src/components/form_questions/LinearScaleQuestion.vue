@@ -80,7 +80,7 @@ export default defineComponent({
 			];
 		},
 		markdownDescription() {
-			return marked(this.linearScale.description);
+			return this.linearScale.description ? marked(this.linearScale.description) : "";
 		},
 		sessionKey() {
 			return makeQuestionKey(this.questionId);
