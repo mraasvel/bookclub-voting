@@ -36,11 +36,6 @@ export default defineComponent({
 					to: '/form',
 				},
 				{
-					label: 'Vote',
-					icon: 'pi pi-pencil',
-					to: '/vote',
-				},
-				{
 					label: 'Admin',
 					to: '/admin',
 					visible: () => this.isSuperUser,

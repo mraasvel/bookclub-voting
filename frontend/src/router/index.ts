@@ -39,16 +39,6 @@ const router = createRouter({
 			component: FormView,
 		},
 		{
-			path: "/vote",
-			name: "vote-view",
-			component: VoteListView,
-		},
-		{
-			path: "/vote/:id",
-			name: "vote",
-			component: VoteView,
-		},
-		{
 			path: '/:pathMatch(.*)*',
 			name: 'NotFound',
 			component: NotFound
