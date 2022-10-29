@@ -48,13 +48,7 @@ export class FormService {
 	}
 
 	async submitAnswer(user: User, answerData: FormAnswerDTO, formId?: number) {
-		let question = await this.formQuestionRepository.findOneOrFail({
-			where: { id: answerData.questionId },
-			relations: ["form"],
-		});
-		if (question.form.closed) {
-			throw new ForbiddenException("form is closed");
-		}
+		let question = await this.assertFormIsOpenByQuestionId(answerData.questionId);
 		if (formId && question.form.id !== formId) {
 			throw new BadRequestException(`invalid answer for given formId: expected: ${question.form.id}, received: ${formId}`);
 		}
@@ -127,6 +121,7 @@ export class FormService {
 	}
 
 	async deleteQuestion(questionId: number) {
+		await this.assertFormIsOpenByQuestionId(questionId);
 		const question = await this.formQuestionRepository.delete(questionId);
 		if (!question) {
 			throw new NotFoundException();
@@ -219,5 +214,19 @@ export class FormService {
 				}
 				break;
 		}
+	}
+
+	private async assertFormIsOpenByQuestionId(questionId: number) {
+		const question = await this.formQuestionRepository.findOne({
+			where: { id: questionId },
+			relations: ['form'],
+		});
+		if (!question) {
+			throw new NotFoundException("question doesn't exist");
+		}
+		if (question.form.closed) {
+			throw new ForbiddenException("form is closed");
+		}
+		return question;
 	}
 }
