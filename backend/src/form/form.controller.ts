@@ -34,6 +34,12 @@ export class FormController {
 		return await this.formService.deleteForm(formId);
 	}
 
+	@Delete('question/:id')
+	@UseGuards(RoleGuard(Role.SuperUser))
+	async deleteQuestion(@Param('id', ParseIntPipe) questionId: number) {
+		return await this.formService.deleteQuestion(questionId);
+	}
+
 	@Patch('add-question/:formId')
 	@UseGuards(RoleGuard(Role.SuperUser))
 	async addQuestion(@Param('formId', ParseIntPipe) formId: number, @Body() questionData: FormQuestionDTO) {

@@ -126,6 +126,14 @@ export class FormService {
 		return form;
 	}
 
+	async deleteQuestion(questionId: number) {
+		const question = await this.formQuestionRepository.delete(questionId);
+		if (!question) {
+			throw new NotFoundException();
+		}
+		return question;
+	}
+
 	async addQuestion(formId: number, questionData: FormQuestionDTO) {
 		let form = await this.getFormById(formId);
 		let question = this.questionFromDTO(questionData);
@@ -147,7 +155,11 @@ export class FormService {
 	}
 
 	async getQuestion(id: number) {
-		return await this.formQuestionRepository.findOneByOrFail({ id });
+		const question = await this.formQuestionRepository.findOneBy({ id });
+		if (!question) {
+			throw new NotFoundException();
+		}
+		return question;
 	}
 
 /* Private */
