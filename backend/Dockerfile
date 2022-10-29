@@ -1,5 +1,5 @@
 # Specifiy image && Name it as development
-FROM node:18 AS development
+FROM node:18-alpine AS development
 
 WORKDIR /app
 ENV NODE_ENV=development
@@ -12,7 +12,7 @@ EXPOSE 3000
 CMD npm install && npm run start:dev
 
 
-FROM node:18 AS production
+FROM node:18-alpine AS production
 ENV NODE_ENV=production
 WORKDIR /app
 

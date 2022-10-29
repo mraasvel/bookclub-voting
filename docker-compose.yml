@@ -37,7 +37,7 @@ services:
 
   bookclub-voting-postgres:
     container_name: postgres
-    image: postgres:13
+    image: postgres:13-alpine
     env_file:
       - .env
     ports:
