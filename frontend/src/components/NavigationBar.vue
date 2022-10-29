@@ -31,9 +31,9 @@ export default defineComponent({
 					to: '/'
 				},
 				{
-					label: 'Vote',
+					label: 'Form',
 					icon: 'pi pi-pencil',
-					to: '/vote',
+					to: '/form',
 				},
 				{
 					label: 'Admin',

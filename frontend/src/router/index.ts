@@ -7,6 +7,8 @@ import AdminView from '@/views/AdminView.vue';
 import VoteListView from '@/views/VoteListView.vue';
 import { useUserStore } from '@/stores/user';
 import { Role } from '@/util/backend.types';
+import FormListView from '@/views/FormListView.vue';
+import FormView from '@/views/FormView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,14 +29,14 @@ const router = createRouter({
 			component: CreatePoll,
 		},
 		{
-			path: "/vote",
-			name: "vote-view",
-			component: VoteListView,
+			path: "/form",
+			name: "form-view",
+			component: FormListView,
 		},
 		{
-			path: "/vote/:id",
-			name: "vote",
-			component: VoteView,
+			path: "/form/:id",
+			name: "form",
+			component: FormView,
 		},
 		{
 			path: '/:pathMatch(.*)*',
