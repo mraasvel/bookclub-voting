@@ -9,6 +9,9 @@ COPY . .
 RUN npm run build
 EXPOSE 3000
 
+RUN apk add --no-cache curl
+HEALTHCHECK CMD curl --silent --fail http://localhost:3000/health | grep 'status":"ok"' || exit 1
+
 CMD npm install && npm run start:dev
 
 

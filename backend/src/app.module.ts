@@ -9,6 +9,8 @@ import { DatabaseModule } from './database/database.module';
 import { PollModule } from './poll/poll.module';
 import databaseFactory from './database/database.factory';
 import { FormModule } from './form/form.module';
+import { HealthCheckController } from './health/health.controller';
+import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
 	imports: [
@@ -24,8 +26,9 @@ import { FormModule } from './form/form.module';
 		ConfigModule.forRoot(configModuleOptions),
 		PollModule,
 		FormModule,
+		TerminusModule,
 	],
-	controllers: [],
+	controllers: [HealthCheckController],
 	providers: [],
 })
 export class AppModule {}
