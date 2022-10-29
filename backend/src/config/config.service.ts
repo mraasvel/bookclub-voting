@@ -9,6 +9,7 @@ export default () => ({
 		},
 		REDIRECT_URL: `${process.env.WEBSITE_URL}`, // We redirect to this after OAuth flow
 	},
+	POSTGRES_HOST: process.env.POSTGRES_HOST || 'postgres',
 	POSTGRES_USER: process.env.POSTGRES_USER,
 	POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
 	POSTGRES_DB: process.env.POSTGRES_DB,
