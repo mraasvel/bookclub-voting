@@ -42,25 +42,25 @@ interface Model {
 }
 
 export default defineComponent({
-    name: "LinearScaleQuestion",
+	name: "LinearScaleQuestion",
 	components: { Card, DataTable, Column },
-    props: {
+	props: {
 		questionId: {
 			type: Number,
 			required: true,
 		},
-        linearScale: {
-            type: Object as PropType<LinearScale>,
-            required: true,
-        }
-    },
+		linearScale: {
+			type: Object as PropType<LinearScale>,
+			required: true,
+		}
+	},
 	emits: {
 		change(_: LinearScaleAnswerDTO) {
 			return true;
 		}
 	},
 	data(): Model {
-		let scores = []
+		const scores = []
 		for (let i = this.linearScale.rangeStart; i <= this.linearScale.rangeEnd; i++) {
 			scores.push(i);
 		}

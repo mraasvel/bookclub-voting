@@ -8,32 +8,32 @@ import { defineComponent, type PropType } from 'vue';
 import LinearScaleQuestion from './LinearScaleQuestion.vue';
 
 export default defineComponent({
-    name: "FormQuestion",
+	name: "FormQuestion",
 	components: { LinearScaleQuestion },
-    props: {
-        question: {
-            type: Object as PropType<FormQuestion>,
-            required: true
-        }
-    },
-    emits: {
-        change(_: FormAnswerDTO) {
-            return true;
-        }
-    },
-    computed: {
-        isLinearScale() {
-            return this.question.formQuestionType === FormQuestionType.LinearScale && this.question.linearScale !== undefined;
-        }
-    },
-    methods: {
-        changeLinearScale(linearScaleAnswer: LinearScaleAnswerDTO) {
-            this.$emit("change", {
-                questionId: this.question.id,
-                type: FormQuestionType.LinearScale,
-                linearScaleAnswer,
-            });
-        }
-    }
+	props: {
+		question: {
+			type: Object as PropType<FormQuestion>,
+			required: true
+		}
+	},
+	emits: {
+		change(_: FormAnswerDTO) {
+			return true;
+		}
+	},
+	computed: {
+		isLinearScale() {
+			return this.question.formQuestionType === FormQuestionType.LinearScale && this.question.linearScale !== undefined;
+		}
+	},
+	methods: {
+		changeLinearScale(linearScaleAnswer: LinearScaleAnswerDTO) {
+			this.$emit("change", {
+				questionId: this.question.id,
+				type: FormQuestionType.LinearScale,
+				linearScaleAnswer,
+			});
+		}
+	}
 })
 </script>

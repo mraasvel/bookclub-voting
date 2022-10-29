@@ -26,31 +26,31 @@ interface Model {
 }
 
 export default defineComponent({
-    name: "FormQuestions",
-    components: { Card, FormQuestion, PrimeButton },
-    props: {
-        form: {
-            type: Object as PropType<Form>,
-            required: true,
-        },
-    },
-    emits: ["refresh"],
-    data(): Model {
-        return {
-            answers: new Map()
-        };
-    },
-    methods: {
-        async submitVote() {
-            const answers = Array.from(this.answers.values());
-            await callApiJson(`/form/submit-form/${this.form.id}`, "POST", {
-                answers
-            });
-            this.$emit("refresh");
-        },
-        change(answer: FormAnswerDTO) {
-            this.answers.set(answer.questionId, answer);
-        }
-    },
+	name: "FormQuestions",
+	components: { Card, FormQuestion, PrimeButton },
+	props: {
+		form: {
+			type: Object as PropType<Form>,
+			required: true,
+		},
+	},
+	emits: ["refresh"],
+	data(): Model {
+		return {
+			answers: new Map()
+		};
+	},
+	methods: {
+		async submitVote() {
+			const answers = Array.from(this.answers.values());
+			await callApiJson(`/form/submit-form/${this.form.id}`, "POST", {
+				answers
+			});
+			this.$emit("refresh");
+		},
+		change(answer: FormAnswerDTO) {
+			this.answers.set(answer.questionId, answer);
+		}
+	},
 });
 </script>

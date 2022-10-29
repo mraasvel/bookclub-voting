@@ -1,4 +1,11 @@
-import { IsInt, IsNumber, IsOptional, IsString, Max, Min, registerDecorator, Validate, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+	IsInt,
+	IsNumber,
+	IsOptional,
+	IsString,
+	Max,
+	Min,
+} from 'class-validator';
 import { ValidateWith } from 'src/validator/validate_with';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { FormQuestion } from '../form_question.entity';
@@ -9,26 +16,26 @@ export class LinearScale {
 	formQuestionId: number;
 
 	@OneToOne(() => FormQuestion, (form: FormQuestion) => form.linearScale, {
-		onDelete: "CASCADE"
+		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
 	formQuestion: FormQuestion;
 
-	@Column({ type: "text" })
+	@Column({ type: 'text' })
 	title: string;
 
-	@Column({ type: "text", nullable: true })
+	@Column({ type: 'text', nullable: true })
 	description?: string;
 
-	@Column({ type: "int"})
+	@Column({ type: 'int' })
 	rangeStart: number;
 
-	@Column({ type: "int" })
+	@Column({ type: 'int' })
 	rangeEnd: number;
 
 	private doUpdate(key: string, partial: LinearScalePartialDTO) {
 		if (partial[key]) {
-			this[key] = partial[key]
+			this[key] = partial[key];
 		}
 	}
 
@@ -54,7 +61,7 @@ export class LinearScaleDTO {
 	@Min(0)
 	@Max(10)
 	@ValidateWith((object) => object.rangeStart <= object.rangeEnd, {
-		message: "rangeStart needs to be less than or equal to rangeEnd"
+		message: 'rangeStart needs to be less than or equal to rangeEnd',
 	})
 	rangeStart: number;
 
@@ -79,7 +86,7 @@ export class LinearScalePartialDTO {
 	@Min(0)
 	@Max(10)
 	@ValidateWith((object) => object.rangeStart <= object.rangeEnd, {
-		message: "rangeStart needs to be less than or equal to rangeEnd"
+		message: 'rangeStart needs to be less than or equal to rangeEnd',
 	})
 	@IsOptional()
 	rangeStart?: number;

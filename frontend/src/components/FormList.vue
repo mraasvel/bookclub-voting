@@ -25,36 +25,36 @@ import DataTable from 'primevue/datatable';
 import { defineComponent, type PropType } from 'vue';
 
 export default defineComponent({
-    name: "FormList",
+	name: "FormList",
 	components: { Card, DataTable, Column },
-    props: {
-        model: {
-            type: Object as PropType<Form[]>,
-            required: true,
-        },
-        label: {
-            type: String,
-            required: true,
-        },
-        // showAdminOptions: {
-        // 	type: Boolean,
-        // 	required: false,
-        // },
-    },
-    computed: {
-        forms() {
-            return this.model.map((form) => {
-                return {
-                    id: form.id,
-                    name: form.name,
-                };
-            });
-        },
-    },
-    methods: {
-        onRowSelect(event: any) {
-            this.$router.push(`/form/${event.data.id}`);
-        },
-    },
+	props: {
+		model: {
+			type: Object as PropType<Form[]>,
+			required: true,
+		},
+		label: {
+			type: String,
+			required: true,
+		},
+		// showAdminOptions: {
+		// 	type: Boolean,
+		// 	required: false,
+		// },
+	},
+	computed: {
+		forms() {
+			return this.model.map((form) => {
+				return {
+					id: form.id,
+					name: form.name,
+				};
+			});
+		},
+	},
+	methods: {
+		onRowSelect(event: any) {
+			this.$router.push(`/form/${event.data.id}`);
+		},
+	},
 });
 </script>

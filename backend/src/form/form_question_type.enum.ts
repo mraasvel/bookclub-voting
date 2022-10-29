@@ -11,5 +11,7 @@ enum FormQuestionType {
 export default FormQuestionType;
 
 export function FormQuestionTypeString() {
-	return `[${Object.keys(FormQuestionType).map((s) => `'${s}'`).join(", ")}]`;
+	return `[${Object.keys(FormQuestionType)
+		.map((s) => `'${s}'`)
+		.join(', ')}]`;
 }

@@ -1,13 +1,28 @@
-import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Patch, Post, Req, UseGuards } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { RequestWithUser } from "src/auth/auth.types";
-import { AuthenticatedGuard } from "src/guards/auth.guard";
-import RoleGuard from "src/guards/role.guard";
-import Role from "src/user/role.enum";
-import { FormDTO } from "./form.entity";
-import { FormService } from "./form.service";
-import { FormAnswerDTO, FormSubmitDTO } from "./form_answer.entity";
-import { FormQuestionDTO, FormQuestionPartialDTO } from "./form_question.entity";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Logger,
+	Param,
+	ParseIntPipe,
+	Patch,
+	Post,
+	Req,
+	UseGuards,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { RequestWithUser } from 'src/auth/auth.types';
+import { AuthenticatedGuard } from 'src/guards/auth.guard';
+import RoleGuard from 'src/guards/role.guard';
+import Role from 'src/user/role.enum';
+import { FormDTO } from './form.entity';
+import { FormService } from './form.service';
+import { FormAnswerDTO, FormSubmitDTO } from './form_answer.entity';
+import {
+	FormQuestionDTO,
+	FormQuestionPartialDTO,
+} from './form_question.entity';
 
 @Controller('form')
 @ApiTags('Form')
@@ -29,7 +44,10 @@ export class FormController {
 
 	@Delete(':id')
 	@UseGuards(RoleGuard(Role.SuperUser))
-	async deleteForm(@Req() req: RequestWithUser, @Param('id', ParseIntPipe) formId: number) {
+	async deleteForm(
+		@Req() req: RequestWithUser,
+		@Param('id', ParseIntPipe) formId: number,
+	) {
 		this.logger.log(`User: ${req.user.username} deletes form: ${formId}`);
 		return await this.formService.deleteForm(formId);
 	}
@@ -42,14 +60,23 @@ export class FormController {
 
 	@Patch('add-question/:formId')
 	@UseGuards(RoleGuard(Role.SuperUser))
-	async addQuestion(@Param('formId', ParseIntPipe) formId: number, @Body() questionData: FormQuestionDTO) {
+	async addQuestion(
+		@Param('formId', ParseIntPipe) formId: number,
+		@Body() questionData: FormQuestionDTO,
+	) {
 		return await this.formService.addQuestion(formId, questionData);
 	}
 
 	@Patch('update-question/:questionId')
 	@UseGuards(RoleGuard(Role.SuperUser))
-	async updateQuestion(@Param('questionId', ParseIntPipe) questionId: number, @Body() partialQuestion: FormQuestionPartialDTO) {
-		return await this.formService.updateQuestion(questionId, partialQuestion);
+	async updateQuestion(
+		@Param('questionId', ParseIntPipe) questionId: number,
+		@Body() partialQuestion: FormQuestionPartialDTO,
+	) {
+		return await this.formService.updateQuestion(
+			questionId,
+			partialQuestion,
+		);
 	}
 
 	@Post('close/:id')
@@ -65,13 +92,24 @@ export class FormController {
 
 	// upsert
 	@Post('submit-answer')
-	async submitAnswer(@Req() req: RequestWithUser, @Body() formAnswerData: FormAnswerDTO) {
+	async submitAnswer(
+		@Req() req: RequestWithUser,
+		@Body() formAnswerData: FormAnswerDTO,
+	) {
 		return await this.formService.submitAnswer(req.user, formAnswerData);
 	}
 
 	@Post('submit-form/:formId')
-	async submitForm(@Req() req: RequestWithUser, @Param('formId', ParseIntPipe) formId: number, @Body() formSubmitData: FormSubmitDTO) {
-		return await this.formService.submitForm(req.user, formId, formSubmitData);
+	async submitForm(
+		@Req() req: RequestWithUser,
+		@Param('formId', ParseIntPipe) formId: number,
+		@Body() formSubmitData: FormSubmitDTO,
+	) {
+		return await this.formService.submitForm(
+			req.user,
+			formId,
+			formSubmitData,
+		);
 	}
 
 	@Get('answers/:id')
@@ -80,12 +118,18 @@ export class FormController {
 	}
 
 	@Get('own-answers/:id')
-	async getOwnFormAnswers(@Req() req: RequestWithUser, @Param('id', ParseIntPipe) formId: number) {
+	async getOwnFormAnswers(
+		@Req() req: RequestWithUser,
+		@Param('id', ParseIntPipe) formId: number,
+	) {
 		return await this.formService.getFormAnswers(formId, req.user.id);
 	}
 
 	@Get('submit-status/:formId')
-	async getSubmitStatus(@Req() req: RequestWithUser, @Param('formId', ParseIntPipe) formId: number) {
+	async getSubmitStatus(
+		@Req() req: RequestWithUser,
+		@Param('formId', ParseIntPipe) formId: number,
+	) {
 		return await this.formService.getSubmitStatus(req.user, formId);
 	}
 

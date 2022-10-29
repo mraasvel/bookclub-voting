@@ -57,7 +57,9 @@ async function bootstrap() {
 		credentials: true,
 		exposedHeaders: ['set-cookie'],
 	});
-	app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+	app.useGlobalPipes(
+		new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+	);
 	app.useGlobalInterceptors(
 		new ClassSerializerInterceptor(app.get(Reflector)),
 	);

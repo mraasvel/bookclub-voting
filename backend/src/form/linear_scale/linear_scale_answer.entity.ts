@@ -13,9 +13,13 @@ export class LinearScaleAnswer {
 	@Exclude()
 	formAnswerUserId: number;
 
-	@OneToOne(() => FormAnswer, (formAnswer: FormAnswer) => formAnswer.linearScaleAnswer, {
-		onDelete: "CASCADE"
-	})
+	@OneToOne(
+		() => FormAnswer,
+		(formAnswer: FormAnswer) => formAnswer.linearScaleAnswer,
+		{
+			onDelete: 'CASCADE',
+		},
+	)
 	@JoinColumn()
 	formAnswer: FormAnswer;
 

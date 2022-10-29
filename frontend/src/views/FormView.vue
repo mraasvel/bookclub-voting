@@ -33,24 +33,24 @@ interface Model {
 }
 
 export default defineComponent({
-    name: "FormView",
+	name: "FormView",
 	components: { FormQuestions, FormResult, Splitter, SplitterPanel, PrimeMenu },
-    data(): Model {
-        return {
-            form: null,
-            currentDisplay: "result",
+	data(): Model {
+		return {
+			form: null,
+			currentDisplay: "result",
 			hasVoted: false,
-        };
-    },
-    computed: {
-        canFillForm() {
-            return this.form && !this.form.closed;
-        },
-        showQuestions() {
-            return this.currentDisplay === "question";
-        },
+		};
+	},
+	computed: {
+		canFillForm() {
+			return this.form && !this.form.closed;
+		},
+		showQuestions() {
+			return this.currentDisplay === "question";
+		},
 		viewOptions() {
-			let views = [
+			const views = [
 				{
 					label: "View",
 					items: [] as any[]
@@ -64,7 +64,7 @@ export default defineComponent({
 						this.currentDisplay = "question";
 					}
 				})
-			};
+			}
 			views[0].items.push(
 				{
 					label: "Result",
@@ -76,17 +76,17 @@ export default defineComponent({
 			)
 			return views;
 		},
-    },
-    methods: {
-        async loadForm() {
-            const id = this.$route.params.id;
-            if (!id) {
-                console.error("no route param");
-                return;
-            }
-            const response = await callApi(`/form/${id}`);
-            this.form = await response.json();
-        },
+	},
+	methods: {
+		async loadForm() {
+			const id = this.$route.params.id;
+			if (!id) {
+				console.error("no route param");
+				return;
+			}
+			const response = await callApi(`/form/${id}`);
+			this.form = await response.json();
+		},
 		async determineInitialDisplay() {
 			const id = this.form!.id;
 			const response = await callApi(`/form/submit-status/${id}`);
@@ -106,9 +106,9 @@ export default defineComponent({
 				console.error(error);
 			}
 		}
-    },
-    mounted() {
-        this.refresh();
-    },
+	},
+	mounted() {
+		this.refresh();
+	},
 });
 </script>

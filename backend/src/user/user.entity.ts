@@ -1,4 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	OneToMany,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
 import Role from './role.enum';
 import { Vote } from 'src/poll/vote.entity';
@@ -38,7 +45,7 @@ export class User {
 	formAnswers: FormAnswer[];
 
 	@ManyToMany(() => Form, (form: Form) => form.participants, {
-		onDelete: "CASCADE",
+		onDelete: 'CASCADE',
 		nullable: true,
 	})
 	@JoinTable({

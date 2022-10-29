@@ -21,27 +21,27 @@ interface Model {
 }
 
 export default defineComponent({
-    name: "FormResult",
-    props: {
-        form: {
-            type: Object as PropType<Form>,
-            required: true
-        }
-    },
-    data(): Model {
-        return {
-            answers: []
-        };
-    },
-    methods: {
-        async loadAnswers() {
-            const response = await callApi(`/form/result/${this.form.id}`);
-            this.answers = await response.json();
-        },
-    },
-    mounted() {
-        this.loadAnswers();
-    },
-    components: { LinearScaleGroup, Card }
+	name: "FormResult",
+	props: {
+		form: {
+			type: Object as PropType<Form>,
+			required: true
+		}
+	},
+	data(): Model {
+		return {
+			answers: []
+		};
+	},
+	methods: {
+		async loadAnswers() {
+			const response = await callApi(`/form/result/${this.form.id}`);
+			this.answers = await response.json();
+		},
+	},
+	mounted() {
+		this.loadAnswers();
+	},
+	components: { LinearScaleGroup, Card }
 });
 </script>

@@ -9,7 +9,15 @@ import { LinearScale } from './linear_scale/linear_scale.entity';
 import { LinearScaleAnswer } from './linear_scale/linear_scale_answer.entity';
 
 @Module({
-	imports: [TypeOrmModule.forFeature([Form, FormQuestion, FormAnswer, LinearScale, LinearScaleAnswer])],
+	imports: [
+		TypeOrmModule.forFeature([
+			Form,
+			FormQuestion,
+			FormAnswer,
+			LinearScale,
+			LinearScaleAnswer,
+		]),
+	],
 	controllers: [FormController],
 	providers: [FormService],
 })
