@@ -23,4 +23,3 @@ exec_be:
 
 exec_fe:
 	docker exec -it $(FRONTEND) bash
-
