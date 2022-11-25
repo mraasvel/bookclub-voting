@@ -53,7 +53,7 @@ async function bootstrap() {
 	}
 	await setupSession(app);
 	app.enableCors({
-		origin: ['http://localhost:8080'],
+		origin: [process.env.VITE_WEBSITE_URL],
 		credentials: true,
 		exposedHeaders: ['set-cookie'],
 	});

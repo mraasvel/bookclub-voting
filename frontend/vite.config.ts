@@ -17,10 +17,10 @@ export default defineConfig(({ mode }) => {
 		},
 		server: {
 			host: true, // Makes it accept connections from `0.0.0.0`
-			port: 8080,
+			port: parseInt(env.PORT),
 			proxy: {
 				"/api": {
-					target: env.BACKEND_URL || 'http://backend:3000/',
+					target: env.BACKEND_URL,
 					rewrite: (path) => path.replace(/^\/api/, ""),
 				},
 			},
