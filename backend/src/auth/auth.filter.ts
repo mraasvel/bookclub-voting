@@ -11,6 +11,6 @@ import { Response } from 'express';
 export class OAuthExceptionFilter implements ExceptionFilter {
 	catch(_exception: HttpException, host: ArgumentsHost) {
 		const response = host.switchToHttp().getResponse<Response>();
-		response.redirect(`${process.env.WEBSITE_URL}`);
+		response.redirect(`${process.env.VITE_WEBSITE_URL}`);
 	}
 }
