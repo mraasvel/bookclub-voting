@@ -2,46 +2,50 @@
 
 version: "3"
 services:
-  bookclub-voting-backend:
-    container_name: bookclub-voting-backend
+  backend:
     build:
       context: ./backend
       # target: production
       target: development
+    restart: unless-stopped
     volumes:
       # - backend_node_module:/app/node_modules
       - ./backend:/app/
     # remove for production, only for direct API testing
     ports:
-      - "3000:3000"
+      - 3000:3000
     env_file:
       - .env
+    environment:
+      - PORT=3000
+      - POSTGRES_HOST=postgres
     depends_on:
-      - bookclub-voting-postgres
+      - postgres
 
-  bookclub-voting-frontend:
-    container_name: bookclub-voting-frontend
+  frontend:
     build:
       context: ./frontend
       # target: production
       target: development
+    restart: unless-stopped
     volumes:
       # - frontend_node_module:/app/node_modules
       - ./frontend:/app/
     env_file:
       - .env
+    environment:
+      - PORT=8080
+      - BACKEND_URL=http://backend:3000
     ports:
-      - "8080:8080"
-    links:
-      - bookclub-voting-backend
+      - 8080:8080
 
-  bookclub-voting-postgres:
-    container_name: postgres
+  postgres:
     image: postgres:13-alpine
+    restart: unless-stopped
     env_file:
       - .env
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
 

@@ -53,7 +53,7 @@ async function bootstrap() {
 	}
 	await setupSession(app);
 	app.enableCors({
-		origin: ['http://localhost:8080'],
+		origin: [process.env.VITE_WEBSITE_URL],
 		credentials: true,
 		exposedHeaders: ['set-cookie'],
 	});
@@ -63,6 +63,6 @@ async function bootstrap() {
 	app.useGlobalInterceptors(
 		new ClassSerializerInterceptor(app.get(Reflector)),
 	);
-	await app.listen(3000);
+	await app.listen(parseInt(process.env.PORT));
 }
 bootstrap();

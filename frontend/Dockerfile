@@ -8,6 +8,9 @@ RUN npm install
 COPY . .
 RUN npm run build-only
 
+RUN apk add --no-cache curl
+HEALTHCHECK CMD curl --fail --silent http://localhost:8080 || exit 1
+
 CMD npm install && npm run dev
 
 FROM node:18-alpine AS production

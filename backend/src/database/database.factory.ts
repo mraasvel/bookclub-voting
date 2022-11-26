@@ -12,7 +12,7 @@ import { TypeORMSession } from './session.entity';
 
 export default (configService: ConfigService): TypeOrmModuleOptions => ({
 	type: 'postgres',
-	host: 'postgres',
+	host: configService.get('POSTGRES_HOST'),
 	port: 5432,
 	username: configService.get('POSTGRES_USER'),
 	password: configService.get('POSTGRES_PASSWORD'),
