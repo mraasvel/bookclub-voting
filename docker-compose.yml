@@ -7,6 +7,7 @@ services:
       context: ./backend
       # target: production
       target: development
+    restart: unless-stopped
     volumes:
       # - backend_node_module:/app/node_modules
       - ./backend:/app/
@@ -26,6 +27,7 @@ services:
       context: ./frontend
       # target: production
       target: development
+    restart: unless-stopped
     volumes:
       # - frontend_node_module:/app/node_modules
       - ./frontend:/app/
@@ -39,6 +41,7 @@ services:
 
   postgres:
     image: postgres:13-alpine
+    restart: unless-stopped
     env_file:
       - .env
     ports:
